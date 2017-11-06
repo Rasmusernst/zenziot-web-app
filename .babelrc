@@ -1,6 +1,6 @@
 {
   "presets":[
-      "es2017", "react"
+      ["env", {"modules": false}], "react"
   ],
   "plugins": ["react-hot-loader/babel"]
 }

@@ -1,7 +1,8 @@
+import 'babel-polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import App from './App.jsx';
+import App from './App';
 
 // ReactDOM.render(
 //  <App name="Glarbo" />,
@@ -21,5 +22,5 @@ import App from './App.jsx';
 
  // Webpack Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept('./App.jsx', () => { render(App) })
+  module.hot.accept('./App', () => { render(App) })
 }
