@@ -1,0 +1,23 @@
+
+.wrapper {
+  background: #b7b7b7;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  margin: 0;
+  padding: 30px;
+
+  a {
+    font: {
+      weight: bold;
+      family: sans-serif;
+    }
+    &:hover {
+      font-size: 18px;
+    }
+    display: block;
+  }
+  img {
+    width: 20%;
+    padding: 16px;
+  }
+}
