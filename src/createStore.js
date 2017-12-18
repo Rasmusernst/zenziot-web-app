@@ -10,13 +10,14 @@ const middlewares = [
 	thunkMiddleware,
 ]
 
+// A bit of a hacked workaround for Redux devTools Extension https://github.com/zalmoxisus/redux-devtools-extension
 const enhancers = []
-// if (config.isDev) {
-// 	const devToolsExtension = window.devToolsExtension
-// 	if (typeof devToolsExtension === 'function') {
-// 		enhancers.push(devToolsExtension())
-// 	}
-// }
+if (window.location.host.toLowerCase() === 'localhost:3000') {
+	const devToolsExtension = window.devToolsExtension
+	if (typeof devToolsExtension === 'function') {
+		enhancers.push(devToolsExtension())
+	}
+}
 
 export default () => {
 	const createStoreWithMiddleware = compose(
