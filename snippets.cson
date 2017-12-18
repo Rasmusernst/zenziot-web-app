@@ -1,0 +1,165 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+'.source.js':
+	'Console Log':
+		'prefix': 'log'
+		'body': 'console.log($1)'
+	'import autobind':
+		'prefix': 'autobind'
+		'body': 'import { autobind } from \'core-decorators\''
+	'import withRouter':
+		'prefix': 'withRouter'
+		'body': 'import { withRouter } from \'react-router\''
+	'import connect':
+		'prefix': 'connect'
+		'body': 'import { connect } from \'react-redux\''
+	'import graphql':
+		'prefix': 'graphql'
+		'body': 'import { graphql } from \'react-apollo\''
+	'import styles':
+		'prefix': 'styles'
+		'body': 'import styles from \'./styles.scss\''
+	'@autobind':
+		'prefix': '@autobind'
+		'body': '@autobind'
+	'@connect':
+		'prefix': '@connect'
+		'body': '@connect(({ $1 }) => ({ $2 }))'
+	'@graphql query':
+		'prefix': '@graphqlquery',
+		'body': """@graphql($1, {
+			name: '$2',
+			options: {
+				variables: {
+					$3
+				},
+				fetchPolicy: 'cache-and-network',
+			},
+		})"""
+	'@graphql mutation':
+		'prefix': '@graphqlmutation',
+		'body': '@graphql($1, { name: \'$2\' })'
+	'PropType Function':
+		'prefix': 'ptfunc'
+		'body': 'PropTypes.func.isRequired,'
+	'PropType Bool':
+		'prefix': 'ptbool'
+		'body': 'PropTypes.bool.isRequired,'
+	'PropType Number':
+		'prefix': 'ptnumber'
+		'body': 'PropTypes.number.isRequired,'
+	'PropType Object':
+		'prefix': 'ptobject'
+		'body': 'PropTypes.object.isRequired,'
+	'PropType String':
+		'prefix': 'ptstring'
+		'body': 'PropTypes.string.isRequired,'
+	'PropType Shape':
+		'prefix': 'ptshape'
+		'body': 'PropTypes.shape({$1}).isRequired,'
+	'PropType Array':
+		'prefix': 'ptarray'
+		'body': 'PropTypes.array.isRequired,'
+	'PropType Node':
+		'prefix': 'ptnode'
+		'body': 'PropTypes.node.isRequired,'
+	'PropType OneOf':
+		'prefix': 'ptone'
+		'body': 'PropTypes.oneOf([$1]).isRequired,'
+	'PropType OneOfType':
+		'prefix': 'ptonetype'
+		'body': 'PropTypes.oneOfType([$1]).isRequired,'
+	'React Component':
+		'prefix': 'component'
+		'body': """
+			import React, { PureComponent } from 'react'
+			import PropTypes from 'prop-types'
+
+			export default class $1 extends PureComponent {
+				static propTypes = {
+					$2
+				}
+
+				render() {
+					return ($3)
+				}
+			}
+
+		"""
+	'React Native Component':
+		'prefix': 'component-native'
+		'body': """
+			import React, { PureComponent } from 'react'
+			import PropTypes from 'prop-types'
+			import { StyleSheet, Text, View } from 'react-native'
+
+			export default class $1 extends PureComponent {
+				static propTypes = {
+					$2
+				}
+
+				render() {
+					return (
+						<View>$3</View>
+					)
+				}
+			}
+
+			const styles = StyleSheet.create({
+				$4
+			})
+
+		"""
+	'Redux Store':
+		'prefix': 'store',
+		'body': """
+			import { handleActions } from 'redux-actions'
+			import { fromJS } from 'immutable'
+
+			// ------------------------------------
+			// Constants
+			// ------------------------------------
+			export const SET_ERROR = '$1/ERROR'
+
+			// ------------------------------------
+			// initialState
+			// ------------------------------------
+			const initialState = fromJS({
+				error: null,
+			})
+
+			// ------------------------------------
+			// Actions
+			// ------------------------------------
+			export const actions = {
+				setError: (payload) => ({ type: SET_ERROR, payload }),
+			}
+
+			// ------------------------------------
+			// Reducer
+			// ------------------------------------
+			export default handleActions({
+				[SET_ERROR]: (state, { payload }) => state.set('error', fromJS(payload)),
+			}, initialState)
+
+		"""

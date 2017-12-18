@@ -18,7 +18,7 @@ const config = {
 				'webpack/hot/only-dev-server',
 			] : [])
 			// Always add the entry point.
-		// It specifies the entry file where the bundler starts the bundling process.
+			// It specifies the entry file where the bundler starts the bundling process.
 			.concat(path.join(srcPath, 'index')),
 	},
 
@@ -66,7 +66,7 @@ const config = {
 			{
 				test: /\.(js|jsx)$/,
 				// Babel-loader allows transpiling JavaScript files using Babel and webpack.
-				// The babel packaes we are using to transpile are: Babel core, Babel webpack loader, Babel env preset & Babel React preset
+				// The babel packages we are using to transpile are: Babel core, Babel webpack loader, Babel env preset & Babel React preset
 				use: ['babel-loader'],
 				exclude: /node_modules/,
 			},

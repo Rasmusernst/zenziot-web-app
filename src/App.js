@@ -1,16 +1,22 @@
-import React from 'react'
-import { Component } from 'react'
-import logo from './logo.png'
-import classes from './style.scss'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router'
+
+import routes from './routes'
 
 export default class App extends Component {
-  render() {
-    return (
-     <div className={classes.wrapper}>
-        <h1>h1 rect react!</h1>
-        <img src={logo} alt="zenziot" />
-        <a href='#'>LINK!</a>
-      </div>
-      )
-  }
+	static propTypes = {
+		store: PropTypes.object.isRequired,
+		history: PropTypes.object.isRequired,
+	}
+
+	render() {
+		const { store, history } = this.props
+		return (
+			<Provider store={store}>
+				<Router history={history} routes={routes()} />
+			</Provider>
+		)
+	}
 }
