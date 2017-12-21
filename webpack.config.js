@@ -120,7 +120,7 @@ const config = {
 					loader: 'sass-loader',
 					options: {
 						sourceMap: true,
-						// includePaths: ['src/lib/styles'],
+						// includePaths: ['src/layout'],
 						// data: `@import 'common.scss';`,
 					},
 				}] : ExtractTextPlugin.extract({

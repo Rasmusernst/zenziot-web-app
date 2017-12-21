@@ -14,6 +14,7 @@
     "core-decorators": "^0.20.0",
     "immutable": "^3.8.2",
     "immutable-nestable-record": "^0.1.2",
+    "material-ui": "next",
     "path": "^0.12.7",
     "prop-types": "15.5.10",
     "react": "15.6.2",
