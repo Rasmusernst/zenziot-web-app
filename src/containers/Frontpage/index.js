@@ -5,13 +5,10 @@ import { autobind } from 'core-decorators'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
-import { blue, orange } from 'material-ui/colors'
+import Typography from 'material-ui/Typography'
+import Icon from 'material-ui/Icon'
 
 import { actions as frontPageActions } from '../../stores/Frontpage'
-
-// import logo from './logo.png'
-import classes from './style.scss'
 
 @connect(({ Frontpage }) => ({ Frontpage }), frontPageActions)
 
@@ -25,51 +22,70 @@ export default class Frontpage extends PureComponent {
 		this.props.setPageName()
 	}
 
+	state = {
+		open: false,
+	}
+
+handleDrawerOpen = () => { this.setState({ open: true }) }
+
+handleDrawerClose = () => { this.setState({ open: false }) }
+
 	@autobind handlesetPageName() { this.props.setPageName('HEJ') }
 
 	render() {
 		const { Frontpage } = this.props
 
-		const theme = createMuiTheme({
-			palette: {
-				primary: blue, // Purple and green play nicely together.
-				secondary: orange,
-			},
-		})
-
 		return (
-			<MuiThemeProvider theme={theme}>
-				<Grid container className={classes.root} spacing={24}>
-					<Grid item xs={12}>
-						<h1>{Frontpage.pageName}</h1>
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Paper elevation={2}>
-							<p>sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls</p>
-							<Button raised color='primary' onClick={this.handlesetPageName}>
+			<Grid container spacing={24}>
+
+				<Grid item xs={12}>
+					<Typography type='headline' gutterBottom>
+						{Frontpage.pageName}
+					</Typography>
+				</Grid>
+
+				<Grid item xs={12} md={4}>
+					<Paper elevation={2}>
+						<Typography type='body1' gutterBottom >
+							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
+						</Typography>
+						<Button raised color='primary' onClick={this.handlesetPageName}>
 								HEJ!
-							</Button>
-						</Paper>
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Paper elevation={2}>
-							<p>sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls</p>
-							<Button raised color='primary' onClick={this.handlesetPageName}>
+						</Button>
+					</Paper>
+				</Grid>
+
+				<Grid item xs={12} md={4}>
+					<Paper elevation={2}>
+						<Typography type='body1' gutterBottom >
+							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
+						</Typography>
+						<Button raised color='default' onClick={this.handlesetPageName}>
 								HEJ!
-							</Button>
-						</Paper>
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Paper elevation={2}>
-							<p>sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls</p>
-							<Button raised color='primary' onClick={this.handlesetPageName}>
+						</Button>
+					</Paper>
+				</Grid>
+
+				<Grid item xs={12} md={4}>
+					<Paper elevation={2}>
+						<Typography type='body1' gutterBottom >
+							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
+						</Typography>
+						<Button raised color='primary' onClick={this.handlesetPageName}>
 								HEJ!
-							</Button>
-						</Paper>
+						</Button>
+					</Paper>
+				</Grid>
+
+				<Grid item xs={12} >
+					<Grid container justify='flex-end' alignItems='flex-end' >
+						<Button fab color='accent' aria-label='add'>
+							<Icon className='material-icons' >add</Icon>
+						</Button>
 					</Grid>
 				</Grid>
-			</MuiThemeProvider>
 
+			</Grid>
 		)
 	}
 }

@@ -8,6 +8,7 @@ import { browserHistory } from 'react-router'
 
 import App from './App'
 import createStore from './createStore'
+import 'typeface-roboto'
 
 // Create store
 const store = createStore()

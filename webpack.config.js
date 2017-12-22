@@ -7,6 +7,8 @@ const isDev = process.env.NODE_ENV !== 'production' // check if we are running a
 const port = process.env.NODE_PORT || '3000'
 const srcPath = path.join(__dirname, 'src') // joins all given path segments together using the platform specific separator as a delimiter
 const distPath = path.join(__dirname, 'dist')
+const CompressionPlugin = require('compression-webpack-plugin')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const config = {
 	entry: {
@@ -46,12 +48,28 @@ const config = {
 			filename: 'index.html',
 			inject: 'body',
 		}),
+		// // fix for manually having to maintin a vendor bundle
+		// // https://github.com/webpack/webpack/issues/2372#issuecomment-213149173
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'vendor',
+			minChunks: ({ resource }) => /node_modules/.test(resource),
+		}),
+		// new webpack.optimize.UglifyJsPlugin(),
+		// // for testing - remove before use
+		new CompressionPlugin({
+			asset: '[path].gz[query]',
+			algorithm: 'gzip',
+			test: /\.(js|html|css)$/,
+			threshold: 10240,
+			minRatio: 0.8,
+		}),
 	]
 		.concat(!isDev
 			? [
 				// For exporting all CSS to one external bundle
 				// Use the plugin to specify the resulting filename
 				new ExtractTextPlugin({ filename: '[name].[contenthash:hex:8].css' }),
+				new BundleAnalyzerPlugin(),
 			]
 			: [])
 		.concat(isDev ? [
@@ -120,8 +138,8 @@ const config = {
 					loader: 'sass-loader',
 					options: {
 						sourceMap: true,
-						// includePaths: ['src/layout'],
-						// data: `@import 'common.scss';`,
+						includePaths: ['src/layout'],
+						data: `@import 'common.scss';`,
 					},
 				}] : ExtractTextPlugin.extract({
 					fallback: 'style-loader',
@@ -152,7 +170,11 @@ const config = {
 			// We have also specified the mimetype (should not be required as it can infer it from the filetype) but bette safe than sorry
 			// We have set a limit (in bytes) for when webpack inlines the image as base64 via dataURL
 			// This is saves unnecessary round trips to the server for excessively small files
-			{ test: /\.svg(\?.*)?$/, use: 'url-loader?limit=10000&mimetype=image/svg+xml&name=[name].[hash:hex:8].[ext]' },
+			{ test: /\.svg(\?.*)?$/, use: 'url-loader?limit=65000&mimetype=image/svg+xml&name=[name].[hash:hex:8].[ext]' },
+			{ test: /\.woff$/, use: 'file-loader?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]' },
+			{ test: /\.woff2$/, use: 'file-loader?limit=65000&mimetype=application/font-woff2&name=public/fonts/[name].[ext]' },
+			{ test: /\.[ot]tf$/, use: 'file-loader?limit=65000&mimetype=application/octet-stream&name=public/fonts/[name].[ext]' },
+			{ test: /\.eot$/, use: 'file-loader?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]' },
 			{ test: /\.(png|jpg|webp)$/, use: 'url-loader?limit=8192&name=[name].[hash:hex:8].[ext]' },
 		],
 	},

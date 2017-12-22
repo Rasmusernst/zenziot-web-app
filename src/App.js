@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import { blue, orange } from 'material-ui/colors'
 
 import routes from './routes'
 
@@ -13,9 +15,19 @@ export default class App extends Component {
 
 	render() {
 		const { store, history } = this.props
+
+		const theme = createMuiTheme({
+			palette: {
+				primary: blue,
+				secondary: orange,
+			},
+		})
+
 		return (
 			<Provider store={store}>
-				<Router history={history} routes={routes()} />
+				<MuiThemeProvider theme={theme}>
+					<Router history={history} routes={routes()} />
+				</MuiThemeProvider>
 			</Provider>
 		)
 	}
