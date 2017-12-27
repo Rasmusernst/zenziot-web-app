@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions'
 import { fromJS, Record } from 'immutable'
-
+import axios from 'axios'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -29,6 +29,18 @@ export const actions = {
 		// check if categories have already loaded, if true don't load again
 		const pageNameToSend = newPageName || getState().Frontpage.pageName
 		console.log('pagename: ', pageNameToSend)
+
+		axios({
+			method: 'GET',
+			url: 'https://jsonplaceholder.typicode.com/posts/1',
+		})
+			.then(function (response) {
+				console.log(response.data)
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+
 		dispatch({ type: SET_PAGENAME, payload: pageNameToSend })
 	},
 }
