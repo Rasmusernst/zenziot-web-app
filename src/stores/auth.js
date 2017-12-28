@@ -8,24 +8,17 @@ import axios from 'axios'
 // Constants
 // ------------------------------------
 export const SET_ERROR = '/ERROR'
-export const SET_TOKENISSENT = 'REGISTER/TOKENISSENT'
-export const SET_TOKENISVALID = 'REGISTER/TOKENISVALID'
+export const ISLOGGEDIN = 'AUTH/ISLOGGEDIN'
 // ------------------------------------
 // initialState
 // ------------------------------------
-// const initialState = fromJS({
-// 	error: null,
-// 	pageName: 'Page Name',
-// })
+
 const State = Record({
 	error: null,
-	tokenIsSent: false,
-	tokenIsValid: false,
-	token: '',
 	userName: '',
 	userPassword: '',
-	userRealName: '',
-}, 'authStore')
+	isLoggedIn: false,
+}, 'auth')
 
 const initialState = State()
 // ------------------------------------
@@ -34,53 +27,7 @@ const initialState = State()
 export const actions = {
 	setError: (payload) => ({ type: SET_ERROR, payload }),
 
-	requestToken: (email) => (dispatch) => {
-		console.log('requesting token for email: ', email)
-
-		axios({
-			method: 'GET',
-			// headers: { 'Access-Control-Allow-Origin': '*' },
-			url: 'http://zenzapi.azurewebsites.net/api/users/GetTwoFactor?emailAddress=' + email,
-		})
-			.then(function () {
-				dispatch({ type: SET_TOKENISSENT })
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-	},
-
-	sendToken: (token, password, email) => (dispatch) => {
-		console.log('token: ', token, 'pwrd: ', password, 'email: ', email)
-
-		axios({
-			method: 'PATCH',
-			url: 'http://zenzapi.azurewebsites.net/api/users/ActivateAccount',
-			data: {
-				EmailAddress: email,
-				Password: password,
-				TwoFactorCode: token,
-			},
-			// headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Accept': 'application/json' },
-		})
-			.then(function (response) {
-				console.log(response)
-				dispatch({ type: SET_TOKENISVALID })
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-	},
-
-	getAccessToken: (email, password) => async (dispatch) => {
-		console.log(email)
-
-		// axios({
-		// 	method: 'GET',
-		// 	url: 'http://zenzapi.azurewebsites.net/api/users',
-		// 	headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json', 'Authorization': 'Bearer iV0CpzrHrfpHAdRX_Xpcg5L8VT1N-lfrP5x0LHeNPmtVG8NQYwaJOubl9ot2i3i8Z2btPuO5kdGq-wRPGY6YnpO5ZTFvhOd70hPP3n1bDkxrzGV4nOe-88byydYetEswR3dVesP9IiQA2Wi-Crryxh82KKJ7DiIib6-m1mQANpeP6HKTAL-WSgsi0S5cK2Y4-Jfx28-ecTqGkvw36qfUQQdMT4vWiFyzCoN6aOCsTVwhnmmlHb1uaViao1jiUG539UMv_UEV1bZDKnIKMnrlWV7ldaVtZR2AllYffesCdxmXvD8-YI8H_x3iTbIntE9F' },
-		// })
-
+	setAccessToken: (email, password) => async (dispatch) => {
 		axios({
 			method: 'POST',
 			url: 'http://zenzapi.azurewebsites.net/token',
@@ -91,18 +38,40 @@ export const actions = {
 			}),
 			headers: { 'accept': 'application/json', 'cache-control': 'no-cache' },
 		})
-		// axios.post('http://zenzapi.azurewebsites.net/token', {
-		// 	grant_type: 'password',
-		// 	username: email,
-		// 	password: password,
-		// })
-
 			.then(function (response) {
-				console.log('response: ', response)
+				// console.log('response from api: ', response.data.access_token)
+				localStorage.setItem('accessToken', response.data.access_token)
+				return dispatch(actions.getAccessToken())
 			})
-			.catch(function (error, response) {
+			.catch(function (error) {
 				console.log(error)
-				console.log('response: ', response)
+				return dispatch({ type: ISLOGGEDIN, payload: false }) // to do: add feedback to user about wrong pass
+			})
+	},
+	getAccessToken: () => async (dispatch) => {
+		// to do: add timer for how often we should check the token with the db
+		// for now just check with each route.
+
+		axios({
+			method: 'GET',
+			url: 'http://zenzapi.azurewebsites.net/api/users',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
+		})
+			.then(function (response) {
+				// console.log('response from api: ', response)
+				if (response.status === 200) {
+					dispatch({ type: ISLOGGEDIN, payload: true })
+				} else {
+					dispatch({ type: ISLOGGEDIN, payload: false })
+				}
+			})
+			.catch(function (error) {
+				console.log(error)
+				return dispatch({ type: ISLOGGEDIN, payload: false })
 			})
 	},
 }
@@ -112,6 +81,6 @@ export const actions = {
 // ------------------------------------
 export default handleActions({
 	[SET_ERROR]: (state, { payload }) => state.set('error', fromJS(payload)),
-	[SET_TOKENISSENT]: (state) => state.merge({ tokenIsSent: true }),
-	[SET_TOKENISVALID]: (state) => state.merge({ tokenIsSent: true }),
+	[ISLOGGEDIN]: (state, { payload }) => state.merge({ isLoggedIn: payload }),
+
 }, initialState)

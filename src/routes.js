@@ -5,6 +5,8 @@ import { Route, IndexRoute } from 'react-router'
 
 // import App from './App'
 import Layout from './containers/Layout'
+import EnsureLoaded from './containers/EnsureLoaded'
+
 import Frontpage from './containers/Frontpage'
 import Subpage from './containers/Subpage'
 import Register from './containers/Register'
@@ -12,7 +14,10 @@ import Register from './containers/Register'
 export default () => (
 	<Route path='/' component={Layout} >
 		<IndexRoute component={Frontpage} />
-		<Route path='/About' component={Subpage} />
-		<Route path='/Register' component={Register} />
+		<Route path='/register' component={Register} />
+		<Route component={EnsureLoaded} >
+			<Route path='/Overview' component={Subpage} />
+		</Route>
+		{/* <Route path='/overview' component={Subpage} /> */}
 	</Route>
 )

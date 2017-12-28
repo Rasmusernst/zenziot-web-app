@@ -1,93 +1,80 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router'
 import { autobind } from 'core-decorators'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
-import Icon from 'material-ui/Icon'
+import TextField from 'material-ui/TextField'
 
-import { actions as frontPageActions } from '../../stores/Frontpage'
+import { actions as authActions } from '../../stores/auth'
 
-@connect(({ Frontpage }) => ({ Frontpage }), frontPageActions)
+@withRouter
+@connect(({ auth }) => ({ auth }), authActions)
 
 export default class Frontpage extends PureComponent {
 	static propTypes = {
-		Frontpage: PropTypes.object.isRequired,
-		setPageName: PropTypes.func.isRequired,
-	}
-
-	componentDidMount() {
-		this.props.setPageName()
+		router: PropTypes.object.isRequired,
+		setAccessToken: PropTypes.func,
+		auth: PropTypes.object,
 	}
 
 	state = {
-		open: false,
+		userName: '',
+		userPassword: '',
 	}
-
-handleDrawerOpen = () => { this.setState({ open: true }) }
-
-handleDrawerClose = () => { this.setState({ open: false }) }
-
-	@autobind handlesetPageName() { this.props.setPageName('HEJ') }
-
+	componentDidUpdate() {
+		if (this.props.auth.isLoggedIn) {
+			this.props.router.push('/overview')
+		}
+	}
+	handleChange = name => event => {
+		this.setState({
+			[name]: event.target.value,
+		})
+	}
+	@autobind handleGetAccessToken() { this.props.setAccessToken(this.state.userName, this.state.userPassword) }
 	render() {
-		const { Frontpage } = this.props
-
+		console.log(this.props.auth)
 		return (
 			<Grid container spacing={24}>
 
 				<Grid item xs={12}>
 					<Typography type='headline' gutterBottom>
-						{Frontpage.pageName}
+						Log ind
 					</Typography>
 				</Grid>
 
 				<Grid item xs={12} md={4}>
 					<Paper elevation={2}>
-						<Typography type='body1' gutterBottom >
-							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
-						</Typography>
-						<Button raised color='primary' onClick={this.handlesetPageName}>
-								HEJ!
+						<Grid item xs={12} md={4}>
+							<TextField
+								required
+								id='required'
+								label='e-mail adressse'
+								defaultValue='Hello World'
+								margin='normal'
+								onChange={this.handleChange('userName')}
+							/>
+						</Grid>
+						<Grid item xs={12} md={4}>
+							<TextField
+								required
+								id='required'
+								label='Kodeord'
+								defaultValue='Hello World'
+								margin='normal'
+								onChange={this.handleChange('userPassword')}
+							/>
+						</Grid>
+						<Button raised color='primary' onClick={this.handleGetAccessToken}>
+								Log Ind
 						</Button>
 					</Paper>
 				</Grid>
-
-				<Grid item xs={12} md={4}>
-					<Paper elevation={2}>
-						<Typography type='body1' gutterBottom >
-							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
-						</Typography>
-						<Button raised color='default' onClick={this.handlesetPageName}>
-								HEJ!
-						</Button>
-					</Paper>
-				</Grid>
-
-				<Grid item xs={12} md={4}>
-					<Paper elevation={2}>
-						<Typography type='body1' gutterBottom >
-							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
-						</Typography>
-						<Button raised color='primary' onClick={this.handlesetPageName}>
-								HEJ!
-						</Button>
-					</Paper>
-				</Grid>
-
-				<Grid item xs={12} >
-					<Grid container justify='flex-end' alignItems='flex-end' >
-						<Button fab color='accent' aria-label='add'>
-							<Icon className='material-icons' >add</Icon>
-						</Button>
-					</Grid>
-				</Grid>
-
 			</Grid>
 		)
 	}
 }
-
-// <img src={logo} alt='zenziot' />

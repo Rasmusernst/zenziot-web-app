@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
 
-import Frontpage from './Frontpage'
-import Auth from './auth'
+import auth from './auth'
+import register from './register'
 
 const rootReducer = combineReducers({
 	routing,
-	Auth,
-	Frontpage,
+	auth,
+	register,
+
 })
 
 export default rootReducer

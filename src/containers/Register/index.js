@@ -6,19 +6,18 @@ import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
-import Icon from 'material-ui/Icon'
 import TextField from 'material-ui/TextField'
+import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper'
 
-import { actions as authActions } from '../../stores/auth'
+import { actions as registerActions } from '../../stores/register'
 
-@connect(({ Auth }) => ({ Auth }), authActions)
+@connect(({ register }) => ({ register }), registerActions)
 
 export default class Register extends PureComponent {
 	static propTypes = {
-		Auth: PropTypes.object.isRequired,
+		register: PropTypes.object,
 		requestToken: PropTypes.func.isRequired,
 		sendToken: PropTypes.func.isRequired,
-		getAccessToken: PropTypes.func.isRequired,
 		location: PropTypes.shape({
 			query: PropTypes.string.isRequired,
 		}),
@@ -27,8 +26,7 @@ export default class Register extends PureComponent {
 	state = {
 		token: '',
 		password: '',
-		userName: '',
-		userPassword: '',
+		activeStep: 0,
 	}
 
 	handleChange = name => event => {
@@ -37,106 +35,194 @@ export default class Register extends PureComponent {
 		})
 	}
 
-	@autobind handleRequestToken() { this.props.requestToken(this.props.location.query.emailAddress) }
-	@autobind handleSendToken() { this.props.sendToken(this.state.token, this.state.password, this.props.location.query.emailAddress) }
-	@autobind handleGetAccessToken() { this.props.getAccessToken(this.state.userName, this.state.userPassword) }
-	render() {
-		const { Auth } = this.props
-// console.log(this.state.token)
-// console.log(this.state.password)
-		return (
-			<Grid container spacing={24}>
+	getSteps() {
+		return ['Send engangskode', 'Aktiver profil', 'Bekræftelse']
+	}
 
-				<Grid item xs={12}>
-					<Typography type='headline' gutterBottom>
-						Aktiver din brugerprofil hos ZenzIOT
-					</Typography>
-				</Grid>
-
-				<Grid item xs={12} md={4}>
-					<Paper elevation={2}>
+	getStepContent(step) {
+		switch (step) {
+			case 0:
+				return (
+					<div>
 						<Typography type='body1' gutterBottom >
-							Send en kode til din mobiltelefon
+									Når du trykker på SEND KODE, sender vi sms med en engangskode.
 						</Typography>
-						<Button raised color='primary' onClick={this.handleRequestToken}>
-								Send
+						<Typography type='body1' gutterBottom >
+									Den skal du bruge til at aktivere din brugerprofil.
+						</Typography>
+						<Button color='primary' onClick={this.handleRequestToken}>
+									Send kode
 						</Button>
-					</Paper>
-				</Grid>
+					</div>
+				)
 
-				<Grid item xs={12} md={4}>
-					<Paper elevation={2}>
-						<Typography type='body1' gutterBottom >
-							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
-						</Typography>
-						<Grid item xs={12} md={4}>
+			case 1:
+				return (
+					<Grid container spacing={24}>
+						<Grid item xs={12}>
+							<Typography type='body1' gutterBottom >
+										Indtast den engangskode du har modtaget på SMS.
+							</Typography>
+							<Typography type='body1' gutterBottom>
+										Indtast et kodeord, du vil bruge til at logge ind på din profil med.
+							</Typography>
+							<Typography type='body1' gutterBottom>
+										Klik på AKTIVER PROFIL når du har indtastet din engangskode og valgt et kodeord.
+							</Typography>
+						</Grid>
+						<Grid item xs={12}>
 							<TextField
 								required
 								id='required'
 								label='Sms Kode'
-								defaultValue='Hello World'
+								defaultValue='xxxxxx'
 								margin='normal'
 								onChange={this.handleChange('token')}
 							/>
 						</Grid>
-						<Grid item xs={12} md={4}>
+						<Grid item xs={12}>
 							<TextField
 								required
 								id='required'
 								label='Kodeord'
-								defaultValue='Hello World'
+								defaultValue='xxxxxx'
 								margin='normal'
 								onChange={this.handleChange('password')}
 							/>
 						</Grid>
-
-						<Button raised color='default' onClick={this.handleSendToken} >
-								Aktiver
-						</Button>
-					</Paper>
-				</Grid>
-
-				<Grid item xs={12} md={4}>
-					<Paper elevation={2}>
-						<Typography type='body1' gutterBottom >
-							sdgkl jsdkgj klsdfgj klsdjfgkl sdfgkl sjdgkl jsdklgj skldgj klsgj klsdfjg klsdjg klsjdfgkl sjdgkl sdfklg kls
-						</Typography>
-						<Grid item xs={12} md={4}>
-							<TextField
-								required
-								id='required'
-								label='e-mail adressse'
-								defaultValue='Hello World'
-								margin='normal'
-								onChange={this.handleChange('userName')}
-							/>
+						<Grid item xs={12}>
+							<Button color='primary' onClick={this.handleSendToken} >
+										Aktiver profil
+							</Button>
 						</Grid>
-						<Grid item xs={12} md={4}>
-							<TextField
-								required
-								id='required'
-								label='Kodeord'
-								defaultValue='Hello World'
-								margin='normal'
-								onChange={this.handleChange('userPassword')}
-							/>
-						</Grid>
-						<Button raised color='primary' onClick={this.handleGetAccessToken}>
-								Log Ind
-						</Button>
-					</Paper>
-				</Grid>
-
-				<Grid item xs={12} >
-					<Grid container justify='flex-end' alignItems='flex-end' >
-						<Button fab color='accent' aria-label='add'>
-							<Icon className='material-icons' >add</Icon>
-						</Button>
 					</Grid>
-				</Grid>
+				)
 
-			</Grid>
+			case 2:
+				return (
+					<Grid container spacing={24}>
+						<Grid item xs={12}>
+							<Typography type='body1' gutterBottom >
+									Din brugerprofil er nu aktiveret. Du kan logge ind med dit kodeord og e-mail adresse ved på forsiden.
+							</Typography>
+						</Grid>
+					</Grid>
+				)
+			default:
+				return 'Ukendt brugeraktivering'
+		}
+	}
+
+handleNext = () => {
+	this.setState({
+		activeStep: this.state.activeStep + 1,
+	})
+}
+
+handleBack = () => {
+	this.setState({
+		activeStep: this.state.activeStep - 1,
+	})
+}
+
+handleReset = () => {
+	this.setState({
+		activeStep: 0,
+	})
+}
+
+	@autobind handleRequestToken() { this.props.requestToken(this.props.location.query.emailAddress) }
+	@autobind handleSendToken() { this.props.sendToken(this.state.token, this.state.password, this.props.location.query.emailAddress) }
+	render() {
+		// const { classes } = this.props
+		const steps = this.getSteps()
+		const { activeStep } = this.state
+
+		return (
+			<div>
+				<Stepper activeStep={activeStep} orientation='vertical'>
+					{steps.map((label, index) => {
+						return (
+							<Step key={label}>
+								<StepLabel>{label}</StepLabel>
+								<StepContent>
+									{this.getStepContent(index)}
+									<div>
+										<div>
+											<Button	disabled={activeStep === 0}	onClick={this.handleBack}>
+												tilbage
+											</Button>
+											<Button	raised color='primary' onClick={this.handleNext} >
+												{activeStep === steps.length - 1 ? 'Afslut' : 'Næste'}
+											</Button>
+										</div>
+									</div>
+								</StepContent>
+							</Step>
+						)
+					})}
+				</Stepper>
+				{activeStep === steps.length && (
+					<Paper square elevation={0}>
+						<Typography>All steps completed - you&quot;re finished</Typography>
+						<Button onClick={this.handleReset}>
+Reset
+						</Button>
+					</Paper>
+				)}
+			</div>
 		)
+
+		// return (
+		// 	<Grid container spacing={24}>
+		//
+		// 		<Grid item xs={12}>
+		// 			<Typography type='headline' gutterBottom>
+		// 				Aktiver din brugerprofil hos ZenzIOT
+		// 			</Typography>
+		// 		</Grid>
+		//
+		// 		<Grid item xs={12} md={4}>
+		// 			<Paper elevation={2}>
+		// 				<Typography type='body1' gutterBottom >
+		// 					Send en kode til din mobiltelefon
+		// 				</Typography>
+		// 				<Button raised color='primary' onClick={this.handleRequestToken}>
+		// 						Send
+		// 				</Button>
+		// 			</Paper>
+		// 		</Grid>
+		//
+		// <Grid item xs={12} md={4}>
+		// 	<Paper elevation={2}>
+		// 		<Grid item xs={12} md={4}>
+		// 			<TextField
+		// 				required
+		// 				id='required'
+		// 				label='Sms Kode'
+		// 				defaultValue='Hello World'
+		// 				margin='normal'
+		// 				onChange={this.handleChange('token')}
+		// 			/>
+		// 		</Grid>
+		// 		<Grid item xs={12} md={4}>
+		// 			<TextField
+		// 				required
+		// 				id='required'
+		// 				label='Kodeord'
+		// 				defaultValue='Hello World'
+		// 				margin='normal'
+		// 				onChange={this.handleChange('password')}
+		// 			/>
+		// 		</Grid>
+		//
+		// 		<Button raised color='default' onClick={this.handleSendToken} >
+		// 				Aktiver
+		// 		</Button>
+		// 	</Paper>
+		// </Grid>
+		// 	</Grid>
+		// )
 	}
 }
 
