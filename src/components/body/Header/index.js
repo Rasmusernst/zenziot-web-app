@@ -27,7 +27,7 @@ export default class Layout extends PureComponent {
 		const { user, onShowFrontpage, onShowOverview } = this.props
 		const { open } = this.state
 
-		console.log('user: ', user)
+		// console.log('user: ', user)
 
 		return (
 			<div>

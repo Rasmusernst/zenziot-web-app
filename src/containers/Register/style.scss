@@ -1,1 +1,14 @@
+.root {
+  flex-grow: 1;
+  margin-top: 30px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
 
+.headlineWrapper {
+  padding-left: 24px;
+  padding-right: 24px;
+  h1 {
+    padding-top: 24px;
+  }
+}

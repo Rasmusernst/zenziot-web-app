@@ -40,8 +40,8 @@ export const actions = {
 			// headers: { 'Access-Control-Allow-Origin': '*' },
 			url: 'http://zenzapi.azurewebsites.net/api/users/GetTwoFactor?emailAddress=' + email,
 		})
-			.then(function () {
-				dispatch({ type: SET_TOKENISSENT })
+			.then(function (response) {
+				dispatch({ type: response.data === 200 ? SET_TOKENISSENT : null })
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -61,11 +61,11 @@ export const actions = {
 			},
 			// headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Accept': 'application/json' },
 		})
-			.then(function (response) {
-				console.log(response)
+			.then(function () {
 				dispatch({ type: SET_TOKENISVALID })
 			})
 			.catch(function (error) {
+				dispatch({ type: SET_ERROR, payload: true })
 				console.log(error)
 			})
 	},

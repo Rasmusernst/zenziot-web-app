@@ -1,7 +1,7 @@
 rules:
-  indentation:
-    - 2
-    - size: tab
+  # indentation:
+  #   - 2
+  #   - size: tab
 
   property-sort-order:
     - 0
