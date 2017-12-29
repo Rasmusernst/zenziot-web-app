@@ -5,6 +5,8 @@ import { withRouter } from 'react-router'
 
 import Body from '../../components/body'
 
+import classes from './style.scss'
+
 @withRouter
 export default class Layout extends PureComponent {
 	static propTypes = {
@@ -22,11 +24,15 @@ export default class Layout extends PureComponent {
 
 		return (
 			<Body
+
 				user={user}
 				onShowFrontpage={this.handleShowFrontpage}
 				onShowOverview={this.handleShowOverview}
 			>
-				{children}
+				<div className={classes.root}>
+					{children}
+				</div>
+
 			</Body>
 		)
 	}

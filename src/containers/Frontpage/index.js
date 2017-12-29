@@ -11,6 +11,8 @@ import TextField from 'material-ui/TextField'
 
 import { actions as authActions } from '../../stores/auth'
 
+import classes from './style.scss'
+
 @withRouter
 @connect(({ auth }) => ({ auth }), authActions)
 
@@ -36,10 +38,11 @@ export default class Frontpage extends PureComponent {
 		})
 	}
 	@autobind handleGetAccessToken() { this.props.setAccessToken(this.state.userName, this.state.userPassword) }
+
 	render() {
 		console.log(this.props.auth)
 		return (
-			<Grid container spacing={24}>
+			<Grid container spacing={24} className={classes.glarb}>
 
 				<Grid item xs={12}>
 					<Typography type='headline' gutterBottom>

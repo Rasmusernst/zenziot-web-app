@@ -8,9 +8,10 @@ import Toolbar from 'material-ui/Toolbar'
 import IconButton from 'material-ui/IconButton'
 import AppBar from 'material-ui/AppBar'
 import Button from 'material-ui/Button'
-// import Grid from 'material-ui/Grid'
 
-export default class Layout extends PureComponent {
+import classes from './style.scss'
+
+export default class Header extends PureComponent {
 	static propTypes = {
 		user: PropTypes.object,
 		onShowFrontpage: PropTypes.func.isRequired,
@@ -27,11 +28,9 @@ export default class Layout extends PureComponent {
 		const { user, onShowFrontpage, onShowOverview } = this.props
 		const { open } = this.state
 
-		// console.log('user: ', user)
-
 		return (
 			<div>
-				<AppBar position='static'>
+				<AppBar className={classes.appBar} position='static'>
 					<Toolbar>
 						<IconButton color='contrast' aria-label='Menu'>
 							<Icon className='material-icons'>menu</Icon>

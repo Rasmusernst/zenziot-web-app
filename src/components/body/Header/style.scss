@@ -1,0 +1,8 @@
+
+@import '../../layout/common';
+
+// need to override the built in style of the app bar component here.
+// a more elegant solution should be found
+.appBar {
+  background-color: $brand-primary-dark !important;
+}

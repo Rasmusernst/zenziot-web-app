@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
-import { blue, orange } from 'material-ui/colors'
+// import { blue, orange } from 'material-ui/colors'
 
+import zenziotTheme from './layout/muiTheme'
 import routes from './routes'
 
 export default class App extends Component {
@@ -16,12 +17,7 @@ export default class App extends Component {
 	render() {
 		const { store, history } = this.props
 
-		const theme = createMuiTheme({
-			palette: {
-				primary: blue,
-				secondary: orange,
-			},
-		})
+		const theme = createMuiTheme(zenziotTheme)
 
 		return (
 			<Provider store={store}>
