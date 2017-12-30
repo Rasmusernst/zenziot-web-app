@@ -18,9 +18,6 @@ export default class EnsureLoaded extends PureComponent {
 	componentDidMount() {
 		this.props.getAccessToken()
 		console.log('EnsureLoaded says isLoggedIn is: ', this.props.auth.isLoggedIn)
-		// if (!this.props.auth.isLoggedIn) {
-		// 	this.props.router.push('/')
-		// }
 	}
 
 	render() {

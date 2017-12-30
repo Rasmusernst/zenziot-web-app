@@ -42,7 +42,7 @@ export default class Frontpage extends PureComponent {
 	render() {
 		console.log(this.props.auth)
 		return (
-			<Grid container spacing={24} className={classes.glarb}>
+			<Grid container spacing={24}>
 
 				<Grid item xs={12}>
 					<Typography type='headline' gutterBottom>

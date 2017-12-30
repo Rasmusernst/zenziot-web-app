@@ -1,0 +1,16 @@
+@import '../../layout/common';
+
+.bottomNavWrapper {
+  bottom: 0;
+  position: fixed;
+}
+
+.bottomNav {
+  width: 100vw;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.highlight {
+  color: $brand-secondary !important;
+}

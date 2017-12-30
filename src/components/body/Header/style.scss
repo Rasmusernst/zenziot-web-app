@@ -9,7 +9,15 @@
 
 .drawer {
   div:first-of-type {
-    top: inherit !important;
+    // top: inherit !important;
     width: 255px;
   }
+}
+
+.zenziotLogoWrapper {
+  img {
+    height: 64px;
+  }
+
+
 }

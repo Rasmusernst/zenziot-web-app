@@ -1,0 +1,27 @@
+
+@import '../../layout/common';
+
+// need to override the built in styles.
+// A more elegant solution should be found
+
+.drawer {
+  div:first-of-type {
+    width: 255px;
+  }
+}
+
+.highlight {
+  color: $brand-secondary !important;
+  h3 {
+    font-weight: 700 !important;
+  }
+}
+
+.zenziotLogoWrapper {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  justify-content: center !important;
+  img {
+    height: 64px;
+  }
+}
