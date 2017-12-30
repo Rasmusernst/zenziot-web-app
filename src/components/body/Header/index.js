@@ -16,23 +16,18 @@ export default class Header extends PureComponent {
 		user: PropTypes.object,
 		onShowFrontpage: PropTypes.func.isRequired,
 		onShowOverview: PropTypes.func.isRequired,
+		onToggleDrawer: PropTypes.func.isRequired,
+		drawerIsOpen: PropTypes.bool.isRequired,
 	}
-
-	state = {
-		open: true,
-	}
-
-	handleDrawerClose = () => { this.setState({ open: false }) }
 
 	render() {
-		const { user, onShowFrontpage, onShowOverview } = this.props
-		const { open } = this.state
+		const { user, onShowFrontpage, onShowOverview, onToggleDrawer, drawerIsOpen } = this.props
 
 		return (
 			<div>
 				<AppBar className={classes.appBar} position='static'>
 					<Toolbar>
-						<IconButton color='contrast' aria-label='Menu'>
+						<IconButton color='contrast' onClick={onToggleDrawer} aria-label='Menu'>
 							<Icon className='material-icons'>menu</Icon>
 						</IconButton>
 						<Typography type='title' color='inherit'>
@@ -41,7 +36,7 @@ export default class Header extends PureComponent {
 						<Button color='contrast'>Login</Button>
 					</Toolbar>
 				</AppBar>
-				<Drawer type='persistent'	anchor='left' open={open}>
+				<Drawer type='persistent' className={classes.drawer} anchor='left' open={drawerIsOpen}>
 					<List>
 						<ListItem button onClick={onShowFrontpage}>
 							<ListItemIcon>
@@ -55,7 +50,7 @@ export default class Header extends PureComponent {
 							</ListItemIcon>
 							<ListItemText primary='Subpage' />
 						</ListItem>
-						<ListItem button onClick={this.handleDrawerClose}>
+						<ListItem button onClick={onToggleDrawer}>
 							<ListItemIcon>
 								<Icon className='material-icons'>close</Icon>
 							</ListItemIcon>

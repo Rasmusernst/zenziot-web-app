@@ -316,9 +316,9 @@ const zenziotTheme = {
 	'zIndex': {
 		'mobileStepper': 900,
 		'menu': 1000,
-		'appBar': 1100,
-		'drawerOverlay': 1200,
-		'navDrawer': 1300,
+		'appBar': 4000,
+		'drawerOverlay': 1100,
+		'navDrawer': 1200,
 		'dialogOverlay': 1400,
 		'dialog': 1500,
 		'layer': 2000,

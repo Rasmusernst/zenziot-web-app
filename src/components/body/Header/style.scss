@@ -1,8 +1,15 @@
 
 @import '../../layout/common';
 
-// need to override the built in style of the app bar component here.
+// need to override the built in style of the app bar and drawer components here.
 // a more elegant solution should be found
 .appBar {
   background-color: $brand-primary-dark !important;
+}
+
+.drawer {
+  div:first-of-type {
+    top: inherit !important;
+    width: 255px;
+  }
 }

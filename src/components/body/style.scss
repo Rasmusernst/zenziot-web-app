@@ -1,0 +1,36 @@
+
+@import '../../layout/common';
+
+// need to override the built in style of the app bar and drawer components here.
+// a more elegant solution should be found
+
+// .content {
+//   margin-left: 0;
+//   transition: margin-left 1 ease-in-out;
+//   &.navIsVisible {
+//     margin-left: 255px;
+//   }
+//
+// }
+// 
+// @keyframes navIsTogglingOn {
+//   0%   { margin-left: 0; }
+//   100% { margin-left: 255px; }
+// }
+//
+// @keyframes navIsTogglingOff {
+//   0%   { margin-left: 255px; }
+//   100% { margin-left: 0; }
+// }
+//
+// .navIsTogglingOn {
+//   animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+//   animation: navIsTogglingOn .225s ;
+//   animation-fill-mode: forwards;
+// }
+//
+// .navIsTogglingOff {
+//   animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+//   animation: navIsVisible .225s ;
+//   animation-fill-mode: forwards;
+// }
