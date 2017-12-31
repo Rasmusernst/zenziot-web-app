@@ -9,15 +9,16 @@
 
 .drawer {
   div:first-of-type {
-    // top: inherit !important;
     width: 255px;
   }
 }
 
 .zenziotLogoWrapper {
+  :hover {
+    cursor: pointer;
+  }
+
   img {
     height: 64px;
   }
-
-
 }

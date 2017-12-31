@@ -74,6 +74,7 @@ class Body extends PureComponent {
 
 				{(() => {
 					switch (location.pathname) {
+						// hide all menus for front page
 						case '/':
 							return (
 								<div>
@@ -81,6 +82,7 @@ class Body extends PureComponent {
 								</div>
 							)
 
+						// show Header for register page
 						case '/register':
 							return (
 								<div>
@@ -90,11 +92,13 @@ class Body extends PureComponent {
 										onShowOverview={onShowOverview}
 										onToggleDrawer={this.handleToggleDrawer}
 										drawerIsOpen={this.state.open}
+										showLogo
 									/>
 									{children}
 								</div>
 							)
 
+						// show Header and side navigation/bottom navigation for dasboard pages.
 						default:
 							return (
 								<div>
@@ -115,9 +119,11 @@ class Body extends PureComponent {
 											onShowOverview={onShowOverview}
 											onToggleDrawer={this.handleToggleDrawer}
 											drawerIsOpen={this.state.open}
+											showLogo={false}
 										/>
 										{children}
 									</div>
+
 									<Hidden mdUp >
 										<BottomNav
 											onShowFrontpage={onShowFrontpage}
@@ -125,54 +131,11 @@ class Body extends PureComponent {
 											onToggleDrawer={this.handleToggleDrawer}
 										/>
 									</Hidden>
+
 								</div>
 							)
 					}
 				})()}
-{/*
-				{noDashboard
-					? <div>
-						<Header
-							user={user}
-							onShowFrontpage={onShowFrontpage}
-							onShowOverview={onShowOverview}
-							onToggleDrawer={this.handleToggleDrawer}
-							drawerIsOpen={this.state.open}
-						/>
-						{children}
-					</div>
-
-					: <div>
-						<Hidden mdDown>
-							<Drawer
-								onShowFrontpage={onShowFrontpage}
-								onShowOverview={onShowOverview}
-								onToggleDrawer={this.handleToggleDrawer}
-								drawerIsOpen={this.state.open}
-								user={user}
-							/>
-						</Hidden>
-
-						<div className={this.handleShiftContent()}>
-							<Header
-								user={user}
-								onShowFrontpage={onShowFrontpage}
-								onShowOverview={onShowOverview}
-								onToggleDrawer={this.handleToggleDrawer}
-								drawerIsOpen={this.state.open}
-							/>
-							{children}
-						</div>
-						<Hidden mdUp >
-							<BottomNav
-								onShowFrontpage={onShowFrontpage}
-								onShowOverview={onShowOverview}
-								onToggleDrawer={this.handleToggleDrawer}
-							/>
-						</Hidden>
-					</div>
-				}
-				 */}
 			</div>
 		)
 	}

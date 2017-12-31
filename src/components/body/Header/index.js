@@ -16,31 +16,45 @@ export default class Header extends PureComponent {
 		user: PropTypes.object,
 		onToggleDrawer: PropTypes.func.isRequired,
 		onShowOverview: PropTypes.func.isRequired,
+		showLogo: PropTypes.bool.isRequired,
 	}
 
 	render() {
-		const { user, onToggleDrawer, onShowOverview } = this.props
+		const { user, onToggleDrawer, onShowOverview, showLogo } = this.props
 
 		return (
 			<div>
 				<AppBar className={classes.appBar} position='static'>
-					<Toolbar>
-						<Hidden mdDown>
-							<IconButton color='contrast' onClick={onToggleDrawer} aria-label='Menu'>
-								<Icon className='material-icons'>menu</Icon>
-							</IconButton>
-						</Hidden>
-						<Grid container spacing={24}>
-							<Grid item xs>
-								<Hidden mdUp>
+					{showLogo
+						// show logo for all resolutions for register page, discard burger menu
+						?	<Toolbar>
+							<Grid container spacing={24}>
+								<Grid item xs>
 									<div onClick={onShowOverview} className={classes.zenziotLogoWrapper}>
 										<img src={logo} alt='ZenzIOT logo' />
 									</div>
-								</Hidden>
+								</Grid>
 							</Grid>
-						</Grid>
-						<Button color='contrast'>Log ind</Button>
-					</Toolbar>
+						</Toolbar>
+						// default appBar config
+						: <Toolbar>
+							<Hidden mdDown>
+								<IconButton color='contrast' onClick={onToggleDrawer} aria-label='Menu'>
+									<Icon className='material-icons'>menu</Icon>
+								</IconButton>
+							</Hidden>
+							<Grid container spacing={24}>
+								<Grid item xs>
+									<Hidden mdUp>
+										<div onClick={onShowOverview} className={classes.zenziotLogoWrapper}>
+											<img src={logo} alt='ZenzIOT logo' />
+										</div>
+									</Hidden>
+								</Grid>
+							</Grid>
+							<Button color='contrast'>Log ind</Button>
+						</Toolbar>
+					}
 				</AppBar>
 			</div>
 		)
