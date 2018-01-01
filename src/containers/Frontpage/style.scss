@@ -1,0 +1,22 @@
+@import '../../layout/common';
+
+.infoContainer {
+  height: 100vh;
+}
+
+.loginContainer {
+  background-color: $brand-primary;
+  height: 100vh;
+}
+
+.logInButton {
+  margin-top: 12px;
+}
+
+.zenziotLogoWrapper {
+  display: flex;
+  justify-content: center;
+  img {
+    height: 160px;
+  }
+}
