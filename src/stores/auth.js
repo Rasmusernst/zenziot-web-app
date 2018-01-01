@@ -9,13 +9,14 @@ import axios from 'axios'
 // ------------------------------------
 export const SET_ERROR = '/ERROR'
 export const ISLOGGEDIN = 'AUTH/ISLOGGEDIN'
+export const SETUSER = 'AUTH/SETUSER'
 // ------------------------------------
 // initialState
 // ------------------------------------
 
 const State = Record({
 	error: null,
-	userName: '',
+	user: null,
 	userPassword: '',
 	isLoggedIn: false,
 }, 'auth')
@@ -62,8 +63,9 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				// console.log('response from api: ', response)
+				console.log('response from api: ', response)
 				if (response.status === 200) {
+					dispatch({ type: SETUSER, payload: response.data })
 					dispatch({ type: ISLOGGEDIN, payload: true })
 				} else {
 					dispatch({ type: ISLOGGEDIN, payload: false })
@@ -74,6 +76,12 @@ export const actions = {
 				return dispatch({ type: ISLOGGEDIN, payload: false })
 			})
 	},
+
+	logOut: () => async (dispatch) => {
+		localStorage.removeItem('accessToken')
+		dispatch({ type: ISLOGGEDIN, payload: false })
+		dispatch({ type: SETUSER, payload: null })
+	},
 }
 
 // ------------------------------------
@@ -82,5 +90,6 @@ export const actions = {
 export default handleActions({
 	[SET_ERROR]: (state, { payload }) => state.set('error', fromJS(payload)),
 	[ISLOGGEDIN]: (state, { payload }) => state.merge({ isLoggedIn: payload }),
+	[SETUSER]: (state, { payload }) => state.merge({ user: payload }),
 
 }, initialState)

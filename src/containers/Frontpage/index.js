@@ -40,42 +40,40 @@ export default class Frontpage extends PureComponent {
 	@autobind handleGetAccessToken() { this.props.setAccessToken(this.state.userName, this.state.userPassword) }
 
 	render() {
-		console.log(this.props.auth)
+		// console.log(this.props.auth)
 		return (
 			<Grid container spacing={24}>
 
-				<Grid item xs={12}>
+				<Grid item xs={12} md={8}>
 					<Typography type='headline' gutterBottom>
 						Log ind
 					</Typography>
 				</Grid>
 
 				<Grid item xs={12} md={4}>
-					<Paper elevation={2}>
-						<Grid item xs={12} md={4}>
-							<TextField
-								required
-								id='required'
-								label='e-mail adressse'
-								defaultValue='Hello World'
-								margin='normal'
-								onChange={this.handleChange('userName')}
-							/>
-						</Grid>
-						<Grid item xs={12} md={4}>
-							<TextField
-								required
-								id='required'
-								label='Kodeord'
-								defaultValue='Hello World'
-								margin='normal'
-								onChange={this.handleChange('userPassword')}
-							/>
-						</Grid>
-						<Button raised color='primary' onClick={this.handleGetAccessToken}>
+					<Grid item xs={12} md={4}>
+						<TextField
+							required
+							id='required'
+							label='e-mail adressse'
+							defaultValue='Hello World'
+							margin='normal'
+							onChange={this.handleChange('userName')}
+						/>
+					</Grid>
+					<Grid item xs={12} md={4}>
+						<TextField
+							required
+							id='required'
+							label='Kodeord'
+							defaultValue='Hello World'
+							margin='normal'
+							onChange={this.handleChange('userPassword')}
+						/>
+					</Grid>
+					<Button raised color='primary' onClick={this.handleGetAccessToken}>
 								Log Ind
-						</Button>
-					</Paper>
+					</Button>
 				</Grid>
 			</Grid>
 		)

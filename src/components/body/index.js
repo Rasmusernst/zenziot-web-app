@@ -28,6 +28,7 @@ class Body extends PureComponent {
 	static propTypes = {
 		children: PropTypes.element.isRequired,
 		user: PropTypes.object,
+		onLogOut: PropTypes.func.isRequired,
 		onShowFrontpage: PropTypes.func.isRequired,
 		onShowOverview: PropTypes.func.isRequired,
 		classes: PropTypes.object.isRequired,
@@ -41,14 +42,15 @@ class Body extends PureComponent {
 	}
 
 	handleToggleDrawer = (forceValue) => {
-		console.log(forceValue)
-		if (forceValue === 'open') {
-			this.setState({ open: true })
-		}
-		if (forceValue === 'close') {
-			this.setState({ open: false })
-		} else {
-			this.setState({ open: !this.state.open })
+		switch (forceValue) {
+			case 'open':
+				this.setState({ open: true })
+				break
+			case 'close':
+				this.setState({ open: false })
+				break
+			default:
+				this.setState({ open: !this.state.open })
 		}
 	}
 
@@ -67,6 +69,7 @@ class Body extends PureComponent {
 			onShowFrontpage,
 			onShowOverview,
 			location,
+			onLogOut,
 		} = this.props
 
 		return (
@@ -88,6 +91,7 @@ class Body extends PureComponent {
 								<div>
 									<Header
 										user={user}
+										onLogOut={onLogOut}
 										onShowFrontpage={onShowFrontpage}
 										onShowOverview={onShowOverview}
 										onToggleDrawer={this.handleToggleDrawer}
@@ -115,6 +119,7 @@ class Body extends PureComponent {
 									<div className={this.handleShiftContent()}>
 										<Header
 											user={user}
+											onLogOut={onLogOut}
 											onShowFrontpage={onShowFrontpage}
 											onShowOverview={onShowOverview}
 											onToggleDrawer={this.handleToggleDrawer}
