@@ -1,5 +1,11 @@
 @import '../../layout/common';
 
+.wrapper {
+  height: 100vh;
+  flex: 1;
+}
+
+
 .infoContainer {
   height: 100vh;
 }
@@ -13,10 +19,23 @@
   margin-top: 12px;
 }
 
-.zenziotLogoWrapper {
+.zenziotLogo {
   display: flex;
   justify-content: center;
   img {
     height: 160px;
   }
+}
+
+.zenziotLogoWhite {
+  display: flex;
+  justify-content: center;
+  img {
+    height: 80px;
+  }
+}
+
+
+.icon {
+    font-size: 36px;
 }
