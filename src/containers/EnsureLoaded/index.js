@@ -18,7 +18,6 @@ export default class EnsureLoaded extends PureComponent {
 
 	componentDidMount() {
 		this.props.ensureLoaded()
-		console.log('componentDidMount')
 		// console.log('componentDidMount')
 		// console.log(this.props.auth.isInitialized, this.props.auth.isLoading, this.props.auth.isLoggedIn)
 		// console.log('EnsureLoaded says isLoggedIn is: ', this.props.auth.isLoggedIn)
@@ -28,7 +27,7 @@ export default class EnsureLoaded extends PureComponent {
 		// console.log('next props', nextProps.children.props.location.pathname )
 		// console.log('current props', this.props.children.props.location.pathname )
 		if (nextProps.children.props.location.pathname !== this.props.children.props.location.pathname) {
-			console.log('componentWillUpdate')
+			// console.log('componentWillUpdate')
 			this.props.ensureLoaded()
 		}
 	}

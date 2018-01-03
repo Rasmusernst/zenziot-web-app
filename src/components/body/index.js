@@ -10,7 +10,7 @@ import BottomNav from './BottomNav'
 
 const styles = theme => ({
 	contentLeft: {
-		marginLeft: 255,
+		marginLeft: 248,
 	},
 	contentShift: {
 		transition: theme.transitions.create('margin', {
