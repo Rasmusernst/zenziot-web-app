@@ -8,6 +8,8 @@
 
 .infoContainer {
   height: 100vh;
+  margin-top: -10px;
+  margin-bottom: -10px;
 }
 
 .loginContainer {
@@ -17,13 +19,16 @@
 
 .logInButton {
   margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .zenziotLogo {
   display: flex;
+
   justify-content: center;
   img {
-    height: 160px;
+    height: 48px;
+    margin-bottom: 4px;
   }
 }
 
@@ -31,10 +36,13 @@
   display: flex;
   justify-content: center;
   img {
-    height: 80px;
+    height: 48px;
   }
 }
 
+.subheading {
+  margin-bottom: 18px !important;
+}
 
 .icon {
     font-size: 36px;

@@ -10,6 +10,9 @@ import axios from 'axios'
 export const SET_ERROR = '/ERROR'
 export const ISLOGGEDIN = 'AUTH/ISLOGGEDIN'
 export const SETUSER = 'AUTH/SETUSER'
+export const START_LOADING = 'AUTH/START_LOADING'
+export const LOGOUT = 'AUTH/LOGOUT'
+export const SETISINITIALIZED = 'AUTH/SETISINITIALIZED'
 // ------------------------------------
 // initialState
 // ------------------------------------
@@ -17,6 +20,8 @@ export const SETUSER = 'AUTH/SETUSER'
 const State = Record({
 	error: null,
 	user: null,
+	isLoading: false,
+	isInitialized: false,
 	userPassword: '',
 	isLoggedIn: false,
 }, 'auth')
@@ -28,7 +33,21 @@ const initialState = State()
 export const actions = {
 	setError: (payload) => ({ type: SET_ERROR, payload }),
 
+	ensureLoaded: () => (dispatch) => {
+		console.log('ensureLoaded fired')
+		dispatch({ type: SETISINITIALIZED, payload: false })
+		return dispatch(actions.getAccessToken())
+
+		// const { auth } = getState()
+		// if (!auth.get('isInitialized')) {
+		// 	console.log('ensureLoaded fired true')
+		// 	return dispatch(actions.getAccessToken())
+		// }
+	},
+
 	setAccessToken: (email, password) => async (dispatch) => {
+		console.log('setAccessToken fired')
+		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'POST',
 			url: 'http://zenzapi.azurewebsites.net/token',
@@ -46,13 +65,15 @@ export const actions = {
 			})
 			.catch(function (error) {
 				console.log(error)
-				return dispatch({ type: ISLOGGEDIN, payload: false }) // to do: add feedback to user about wrong pass
+				return dispatch(actions.logOut()) // to do: add feedback to user about wrong pass
 			})
 	},
+
 	getAccessToken: () => async (dispatch) => {
 		// to do: add timer for how often we should check the token with the db
 		// for now just check with each route.
-
+		console.log('getAccessToken fired')
+		dispatch({ type: START_LOADING })
 		axios({
 			method: 'GET',
 			url: 'http://zenzapi.azurewebsites.net/api/users',
@@ -63,24 +84,24 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				console.log('response from api: ', response)
+				// console.log('response from api: ', response)
 				if (response.status === 200) {
 					dispatch({ type: SETUSER, payload: response.data })
 					dispatch({ type: ISLOGGEDIN, payload: true })
 				} else {
-					dispatch({ type: ISLOGGEDIN, payload: false })
+					return dispatch(actions.logOut())
 				}
 			})
 			.catch(function (error) {
 				console.log(error)
-				return dispatch({ type: ISLOGGEDIN, payload: false })
+				return dispatch(actions.logOut())
 			})
 	},
 
 	logOut: () => async (dispatch) => {
+		console.log('logging out')
 		localStorage.removeItem('accessToken')
-		dispatch({ type: ISLOGGEDIN, payload: false })
-		dispatch({ type: SETUSER, payload: null })
+		dispatch({ type: LOGOUT })
 	},
 }
 
@@ -89,7 +110,22 @@ export const actions = {
 // ------------------------------------
 export default handleActions({
 	[SET_ERROR]: (state, { payload }) => state.set('error', fromJS(payload)),
+	[START_LOADING]: (state) => state.merge({
+		isLoading: true,
+		isInitialized: true,
+	}),
 	[ISLOGGEDIN]: (state, { payload }) => state.merge({ isLoggedIn: payload }),
-	[SETUSER]: (state, { payload }) => state.merge({ user: payload }),
+	[SETISINITIALIZED]: (state, { payload }) => state.merge({ isInitialized: payload }),
+	[LOGOUT]: (state) => state.merge({
+		user: null,
+		isLoggedIn: false,
+		isLoading: false,
+		isInitialized: true,
+	}),
+	[SETUSER]: (state, { payload }) => state.merge({
+		user: payload,
+		isLoading: false,
+		isInitialized: true,
+	}),
 
 }, initialState)

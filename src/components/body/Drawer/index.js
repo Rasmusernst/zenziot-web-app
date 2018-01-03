@@ -29,7 +29,7 @@ export default class NavigationDrawer extends PureComponent {
 		const { user, onShowFrontpage, onShowOverview, onToggleDrawer, drawerIsOpen } = this.props
 
 		const path = this.props.location.pathname
-		const userIsLoggedIn = user === undefined ? false : user.isLoggedIn
+		// const userIsLoggedIn = user === undefined ? false : user.isLoggedIn
 
 		return (
 			<div>
@@ -41,7 +41,7 @@ export default class NavigationDrawer extends PureComponent {
 							<img src={logo} alt='ZenzIOT logo' />
 						</ListItem>
 
-						<ListItem button onClick={onShowFrontpage} className={path === '/' ? classes.highlight : null} >
+						<ListItem button onClick={onShowOverview} className={path === '/' ? classes.highlight : null} >
 							<ListItemIcon className={path === '/' ? classes.highlight : null}>
 								<Icon className='material-icons'>home</Icon>
 							</ListItemIcon>

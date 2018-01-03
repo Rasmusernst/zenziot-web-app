@@ -17,7 +17,8 @@ export default () => (
 		<Route path='/register' component={Register} />
 		<Route component={EnsureLoaded} >
 			<Route path='/Overview' component={Subpage} />
+			<Route path='/test' component={Register} />
 		</Route>
-		{/* <Route path='/overview' component={Subpage} /> */}
+
 	</Route>
 )

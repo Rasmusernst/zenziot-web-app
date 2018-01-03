@@ -24,7 +24,7 @@ export default class Layout extends PureComponent {
 	@autobind handleShowOverview() { this.props.router.push('/overview') }
 
 	render() {
-		const { children, auth, handleLogOut } = this.props
+		const { children, auth } = this.props
 		const user = auth ? auth.get('user') : null
 		// console.log('user:', user)
 		return (

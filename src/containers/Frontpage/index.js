@@ -15,8 +15,8 @@ import Icon from 'material-ui/Icon'
 
 import { actions as authActions } from '../../stores/auth'
 
-import logo from './zenziot_logo.svg'
-import logoWhite from './zenziot_logo_white.svg'
+import logo from './logo_black.svg'
+import logoWhite from './logo_white.svg'
 import customClasses from './style.scss'
 
 const styles = theme => ({
@@ -50,17 +50,24 @@ class Frontpage extends PureComponent {
 		userName: '',
 		userPassword: '',
 	}
+
 	componentDidUpdate() {
 		if (this.props.auth.isLoggedIn) {
 			this.props.router.push('/overview')
 		}
 	}
+
 	handleChange = name => event => {
 		this.setState({
 			[name]: event.target.value,
 		})
 	}
-	@autobind handleGetAccessToken() { this.props.setAccessToken(this.state.userName, this.state.userPassword) }
+
+	handleClick = () => {
+		window.location.href = 'https://zenziot.dk/'
+	}
+
+	@autobind handleSetAccessToken() { this.props.setAccessToken(this.state.userName, this.state.userPassword) }
 
 	render() {
 		const { classes } = this.props
@@ -69,73 +76,91 @@ class Frontpage extends PureComponent {
 			<Grid container spacing={0} >
 
 				<Hidden mdDown>
+
 					<Grid item xs={12} md={8} >
-						<Grid container spacing={24} alignItems='center' justify='center' className={customClasses.infoContainer}>
-							<Grid item xs={12}>
-								<Grid container spacing={24} direction='column' alignItems='center' justify='center'>
+						<Paper elevation={0}>
+							<Grid container spacing={0} alignItems='center' justify='center' className={customClasses.infoContainer}>
+								<Grid item xs={12}>
+									<Grid container spacing={24} direction='column' alignItems='center' justify='center'>
 
-									<Grid item xs={6}>
-										<div className={customClasses.zenziotLogo}>
-											<img src={logo} alt='ZenzIOT logo' />
-										</div>
+										<Grid item xl={3} lg={5} md={6}>
+											<div className={customClasses.zenziotLogo}>
+												<img src={logo} alt='ZenzIOT logo' />
+											</div>
 
-										<Typography type='headline' align='center' gutterBottom>
+											<Typography type='subheading' align='center' className={customClasses.subheading} >
 										Sporingsportal
-										</Typography>
+											</Typography>
 
-										<Typography type='body1' align='center' gutterBottom>
+											<Typography type='body1' align='center' gutterBottom>
 										Overvåg og administrer din GPS tracker.
 										Opsæt alarmer og modtag besked på mail og SMS,
 										hvis en GPS tracker bevæger sig udenfor et tilladt tidspunkt
 										eller område.
-										</Typography>
-									</Grid>
+											</Typography>
+										</Grid>
 
-									<Grid item xs={6}>
-										<Grid container spacing={24} alignItems='center' justify='center'>
+										<Grid item xl={3} lg={5} md={6}>
+											<Grid container spacing={24} alignItems='center' justify='center'>
 
-											<Grid item xs={6} >
-												<Typography type='headline' align='center' gutterBottom>
-													<Icon className={customClasses.icon} color='primary' >monetization_on</Icon>
-												</Typography>
-												<Typography type='body1' align='center' gutterBottom>
+												<Grid item xs={5} >
+													<Typography type='headline' align='center' gutterBottom>
+														<Icon className={customClasses.icon} color='primary' >monetization_on</Icon>
+													</Typography>
+													<Typography type='body1' align='center' noWrap gutterBottom>
 													Uhørt billigt
-												</Typography>
-											</Grid>
+													</Typography>
+												</Grid>
 
-											<Grid item xs={6} >
-												<Typography type='headline' align='center' gutterBottom>
-													<Icon className={customClasses.icon} color='primary' >alarm_on</Icon>
-												</Typography>
-												<Typography type='body1' align='center' gutterBottom>
+												<Grid item xs={5}>
+													<Typography type='headline' align='center' gutterBottom>
+														<Icon className={customClasses.icon} color='primary' >alarm_on</Icon>
+													</Typography>
+													<Typography type='body1' align='center' noWrap gutterBottom>
 													Hurtigt i gang
-												</Typography>
-											</Grid>
+													</Typography>
+												</Grid>
 
-											<Grid item xs={6} >
-												<Typography type='headline' align='center' gutterBottom>
-													<Icon className={customClasses.icon} color='primary' >battery_charging_full</Icon>
-												</Typography>
-												<Typography type='body1' align='center' gutterBottom>
+												<Grid item xs={5}>
+													<Typography type='headline' align='center' gutterBottom>
+														<Icon className={customClasses.icon} color='primary' >battery_charging_full</Icon>
+													</Typography>
+													<Typography type='body1' align='center' noWrap gutterBottom>
 													Lang batterilevetid
-												</Typography>
-											</Grid>
+													</Typography>
+												</Grid>
 
-											<Grid item xs={6} >
-												<Typography type='headline' align='center' gutterBottom>
-													<Icon className={customClasses.icon} color='primary' >language</Icon>
-												</Typography>
-												<Typography type='body1' align='center' gutterBottom>
+												<Grid item xs={5}>
+													<Typography type='headline' align='center' gutterBottom>
+														<Icon className={customClasses.icon} color='primary' >language</Icon>
+													</Typography>
+													<Typography type='body1' align='center' noWrap gutterBottom>
 													Sporingsportal
-												</Typography>
-											</Grid>
+													</Typography>
+												</Grid>
 
+												<Grid item xs={12}>
+													<Typography type='body1' align='center'>
+														Du kan købe GPS trackers i vores webshop
+													</Typography>
+												</Grid>
+
+												<Grid item xs={12}>
+													<Grid container spacing={24} alignItems='center' justify='center'>
+														<Button	raised color='primary' onClick={this.handleClick} className={customClasses.logInButton}>
+															Til webshop
+														</Button>
+													</Grid>
+												</Grid>
+
+											</Grid>
 										</Grid>
 									</Grid>
 								</Grid>
 							</Grid>
-						</Grid>
+						</Paper>
 					</Grid>
+
 				</Hidden>
 
 				<Grid item xs={12} md={4} >
@@ -143,19 +168,23 @@ class Frontpage extends PureComponent {
 						<Grid item xs={6}>
 							<Grid container direction='column' alignItems='center' justify='center' >
 
-								<Grid item xs={12}>
-									<div className={customClasses.zenziotLogoWhite}>
-										<img src={logoWhite} alt='Hvidt ZenzIOT logo' />
-									</div>
+								<Hidden mdUp>
+									<Grid item xs={12}>
 
-									<Typography type='body1' align='center' gutterBottom classes={{	root: classes.inputContrast }}>
-									Sporingsportal
-									</Typography>
-								</Grid>
+										<div className={customClasses.zenziotLogoWhite}>
+											<img src={logoWhite} alt='Hvidt ZenzIOT logo' />
+										</div>
+
+										<Typography type='body1' align='center' gutterBottom classes={{	root: classes.inputContrast }}>
+												Sporingsportal
+										</Typography>
+
+									</Grid>
+								</Hidden>
 
 								<Grid item xs={12}>
 									<Typography type='headline' gutterBottom classes={{	root: classes.inputContrast }}>
-										Log ind
+												Log ind
 									</Typography>
 								</Grid>
 
@@ -199,7 +228,7 @@ class Frontpage extends PureComponent {
 									</Grid>
 
 									<Grid item xs={12}>
-										<Button raised color='accent' onClick={this.handleGetAccessToken} className={customClasses.logInButton}>
+										<Button raised color='accent' onClick={this.handleSetAccessToken} className={customClasses.logInButton}>
 											Log Ind
 										</Button>
 									</Grid>
