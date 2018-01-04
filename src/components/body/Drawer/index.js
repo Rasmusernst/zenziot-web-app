@@ -14,6 +14,7 @@ export default class NavigationDrawer extends PureComponent {
 		user: PropTypes.object,
 		onShowFrontpage: PropTypes.func.isRequired,
 		onShowOverview: PropTypes.func.isRequired,
+		onShowTrackers: PropTypes.func.isRequired,
 		onToggleDrawer: PropTypes.func.isRequired,
 		drawerIsOpen: PropTypes.bool.isRequired,
 		location: PropTypes.shape({
@@ -26,7 +27,7 @@ export default class NavigationDrawer extends PureComponent {
 	}
 
 	render() {
-		const { user, onShowFrontpage, onShowOverview, onToggleDrawer, drawerIsOpen } = this.props
+		const { user, onShowFrontpage, onShowOverview, onToggleDrawer, onShowTrackers, drawerIsOpen } = this.props
 
 		const path = this.props.location.pathname
 		// const userIsLoggedIn = user === undefined ? false : user.isLoggedIn
@@ -37,7 +38,7 @@ export default class NavigationDrawer extends PureComponent {
 				<Drawer type='persistent' className={classes.drawer} anchor='left' open={drawerIsOpen}>
 					<List>
 
-						<ListItem button onClick={onShowOverview} className={classes.zenziotLogoWrapper}>
+						<ListItem button onClick={onShowFrontpage} className={classes.zenziotLogoWrapper}>
 							<img src={logo} alt='ZenzIOT logo' />
 						</ListItem>
 
@@ -48,7 +49,7 @@ export default class NavigationDrawer extends PureComponent {
 							<ListItemText primary='Overblik' />
 						</ListItem>
 
-						<ListItem button onClick={onShowFrontpage}>
+						<ListItem button onClick={onShowTrackers}>
 							<ListItemIcon>
 								<Icon className='material-icons'>view_list</Icon>
 							</ListItemIcon>

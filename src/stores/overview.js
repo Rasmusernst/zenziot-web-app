@@ -1,5 +1,3 @@
-import qs from 'querystring'
-
 import { handleActions } from 'redux-actions'
 import { fromJS, Record } from 'immutable'
 import axios from 'axios'
@@ -28,7 +26,6 @@ export const actions = {
 	setError: (payload) => ({ type: SET_ERROR, payload }),
 
 	getMessages: () => async (dispatch) => {
-
 		axios({
 			method: 'GET',
 			url: 'http://zenzapi.azurewebsites.net/api/overview',
@@ -39,7 +36,7 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				console.log('response from api: ', response)
+				// console.log('response from api: ', response)
 				if (response.status === 200) {
 					dispatch({ type: SETMESSAGES, payload: response.data })
 					dispatch({ type: SETISINITIALIZED, payload: true })

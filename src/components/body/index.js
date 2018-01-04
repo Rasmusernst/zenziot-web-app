@@ -31,6 +31,7 @@ class Body extends PureComponent {
 		onLogOut: PropTypes.func.isRequired,
 		onShowFrontpage: PropTypes.func.isRequired,
 		onShowOverview: PropTypes.func.isRequired,
+		onShowTrackers: PropTypes.func.isRequired,
 		classes: PropTypes.object.isRequired,
 		location: PropTypes.shape({
 			pathname: PropTypes.string.isRequired,
@@ -68,6 +69,7 @@ class Body extends PureComponent {
 			user,
 			onShowFrontpage,
 			onShowOverview,
+			onShowTrackers,
 			location,
 			onLogOut,
 		} = this.props
@@ -94,6 +96,7 @@ class Body extends PureComponent {
 										onLogOut={onLogOut}
 										onShowFrontpage={onShowFrontpage}
 										onShowOverview={onShowOverview}
+										onShowTrackers={onShowTrackers}
 										onToggleDrawer={this.handleToggleDrawer}
 										drawerIsOpen={this.state.open}
 										showLogo
@@ -110,6 +113,7 @@ class Body extends PureComponent {
 										<Drawer
 											onShowFrontpage={onShowFrontpage}
 											onShowOverview={onShowOverview}
+											onShowTrackers={onShowTrackers}
 											onToggleDrawer={this.handleToggleDrawer}
 											drawerIsOpen={this.state.open}
 											user={user}
@@ -122,6 +126,7 @@ class Body extends PureComponent {
 											onLogOut={onLogOut}
 											onShowFrontpage={onShowFrontpage}
 											onShowOverview={onShowOverview}
+											onShowTrackers={onShowTrackers}
 											onToggleDrawer={this.handleToggleDrawer}
 											drawerIsOpen={this.state.open}
 											showLogo={false}
@@ -133,6 +138,7 @@ class Body extends PureComponent {
 										<BottomNav
 											onShowFrontpage={onShowFrontpage}
 											onShowOverview={onShowOverview}
+											onShowTrackers={onShowTrackers}
 											onToggleDrawer={this.handleToggleDrawer}
 										/>
 									</Hidden>

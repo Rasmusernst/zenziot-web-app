@@ -1,0 +1,22 @@
+@import '../../layout/common';
+
+.headline {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.statusBox {
+  margin: 24px;
+}
+
+.statusIndicator {
+  background-color: $brand-primary;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.message {
+    background-color: $brand-secondary;
+  }
+}

@@ -1,0 +1,18 @@
+@import '../../layout/common';
+
+
+
+.button{
+    display: flex;
+    margin-left:8px;
+}
+
+.formButton {
+  margin: 16px;
+}
+
+.fabButtonWrapper {
+  position: fixed;
+  display: flex;
+  bottom: 55px;
+}

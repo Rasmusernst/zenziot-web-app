@@ -158,7 +158,6 @@ class StatusBox extends PureComponent {
 										</div>,
 									)
 								}
-
 							</List>
 						</Paper>
 					}

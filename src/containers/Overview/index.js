@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
-import { autobind } from 'core-decorators'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
@@ -49,21 +48,12 @@ class Overview extends PureComponent {
 		this.props.getMessages()
 	}
 
-	handleChange = name => event => {
-		this.setState({
-			[name]: event.target.value,
-		})
-	}
-
 	render() {
 		const { classes, overview } = this.props
-
 		const areaAlarms = overview.getIn(['messages', 'areaAlarms'])
 		const movementAlarms = overview.getIn(['messages', 'movementAlarms'])
 		const operationalAlarms = overview.getIn(['messages', 'operationalAlarms'])
 
-		// console.log('component:', areaAlarms.count(), movementAlarms.count(), operationalAlarms.count())
-		console.log(areaAlarms)
 		return (
 
 			<Grid container spacing={0} >

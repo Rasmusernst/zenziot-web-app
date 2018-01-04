@@ -22,6 +22,7 @@ export default class Layout extends PureComponent {
 	@autobind handleShowFrontpage() { this.props.router.push('/') }
 	@autobind handleLogOut() { this.props.logOut() }
 	@autobind handleShowOverview() { this.props.router.push('/overview') }
+	@autobind handleShowTrackers() { this.props.router.push('/trackers') }
 
 	render() {
 		const { children, auth } = this.props
@@ -34,6 +35,7 @@ export default class Layout extends PureComponent {
 				onLogOut={this.handleLogOut}
 				onShowFrontpage={this.handleShowFrontpage}
 				onShowOverview={this.handleShowOverview}
+				onShowTrackers={this.handleShowTrackers}
 			>
 				<div className={classes.root}>
 					{children}
