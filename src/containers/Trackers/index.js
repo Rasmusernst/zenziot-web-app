@@ -43,7 +43,7 @@ class Trackers extends PureComponent {
 		classes: PropTypes.object.isRequired,
 	}
 
-	@autobind handleCreateMovementAlarm() { this.props.createMovementAlarm() }
+	@autobind handleCreateMovementAlarm(name, startTime, stopTime) { this.props.createMovementAlarm(name, startTime, stopTime) }
 
 	componentDidMount() {
 		this.props.getTrackers()

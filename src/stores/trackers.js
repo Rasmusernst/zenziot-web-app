@@ -88,19 +88,20 @@ export const actions = {
 				console.log(error)
 			})
 	},
-	createMovementAlarm: (name, starttime, endtime) => async (dispatch) => {
+	createMovementAlarm: (name, startTime, stopTime) => async (dispatch) => {
+		console.log(name, startTime, stopTime)
 		axios({
 			method: 'POST',
-			url: 'http://zenzapi.azurewebsites.net//api/movementalarms',
-			data: qs.stringify({
+			url: 'http://zenzapi.azurewebsites.net/api/movementalarms',
+			data: {
 				name: name,
-				StartTime: starttime,
-				EndTime: endtime,
-			}),
+				StartTime: startTime,
+				EndTime: stopTime,
+			},
 			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Accept': 'application/json',
+
+				'Content-Type': 'application/json',
+
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
@@ -109,7 +110,6 @@ export const actions = {
 			})
 			.catch(function (error) {
 				console.log(error)
-				return dispatch(actions.logOut()) // to do: add feedback to user about wrong pass
 			})
 	},
 }

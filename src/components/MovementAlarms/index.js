@@ -60,147 +60,183 @@ class MovementAlarms extends PureComponent {
 		onCreateMovementAlarm: PropTypes.func,
 	}
 
-state = {
-	open: false,
-}
+	state = {
+		open: false,
+		name: null,
+		startTime: null,
+		stopTime: null,
+		checked: false,
+		alarmId: null,
+	}
 
-handleClickOpen = () => {
-	this.setState({ open: true })
-}
+	handleClickOpen = () => {
+		this.setState({ open: true })
+	}
 
-handleClose = () => {
-	this.setState({ open: false })
-}
+	handleClose = () => {
+		this.setState({ open: false })
+	}
 
-render() {
-	const { classes, trackers, onCreateMovementAlarm } = this.props
-	return (
+	handleChange = name => event => {
+		console.log(this.state)
+		this.setState({
+			[name]: event.target.value,
+		})
+	}
 
-		<Grid item xs={12} md={8} lg={6} xl={4}>
-			<Paper classes={{ root: classes.trackerListPaper }}>
-				<List>
-					<ListItem>
-						<Typography type='subheading'>
-											Alle Bevægelsesalarmer
-						</Typography>
+	handleSubmit() {
+		const { name, startTime, stopTime, checked, alarmId } = this.state
+		const checkedStartTime = checked ? '00:00:00' : startTime + ':00'
+		const checkedStopTime = checked ? '00:00:00' : stopTime + ':00'
 
-					</ListItem>
-					<Divider classes={{ root: classes.headlineDivider }} />
-					{trackers.isInitialized && trackers.movementAlarms.map(n => {
-						return (
-							<ListItem>
-								<ListItemText	primary={n.get('name')} />
+		console.log(name, checkedStartTime, checkedStopTime, alarmId)
+		if (alarmId !== null) {
+			this.props.onCreateMovementAlarm(name, checkedStartTime, checkedStopTime, alarmId)
+		}
+		this.props.onCreateMovementAlarm(name, checkedStartTime, checkedStopTime)
+		this.handleClose()
+	}
 
-								<div className={movementAlarmsclasses.button}>
-									<IconButton aria-label='Delete'>
-										<Icon>delete</Icon>
-									</IconButton>
-								</div>
+	handleToggle = () => {
+		this.setState({ checked: !this.state.checked })
+	}
 
-								<div className={movementAlarmsclasses.button}>
-									<IconButton aria-label='Delete'>
-										<Icon>edit</Icon>
-									</IconButton>
-								</div>
+	render() {
+		const { classes, trackers } = this.props
+		const { open, name, startTime, stopTime, checked, alarmId } = this.state
+		return (
 
-							</ListItem>
-						)
-					})}
-				</List>
+			<Grid item xs={12} md={8} lg={6} xl={4}>
+				<Paper classes={{ root: classes.trackerListPaper }}>
+					<List>
+						<ListItem>
+							<Typography type='subheading'>
+												Alle Bevægelsesalarmer
+							</Typography>
 
-				<Dialog
-					open={this.state.open}
-					onClose={this.handleClose}
-					aria-labelledby='form-dialog-title'
-				>
-					<DialogTitle id='form-dialog-title'>Opsæt Bevægelsesalarm</DialogTitle>
+						</ListItem>
+						<Divider classes={{ root: classes.headlineDivider }} />
+						{trackers.isInitialized && trackers.movementAlarms.map(n => {
+							return (
+								<ListItem key={n.get('id')}>
+									<ListItemText	primary={n.get('name')} />
 
-					<DialogContent>
-						<TextField
-							autoFocus
-							margin='dense'
-							id='name'
-							label='Alarmens navn'
-							fullWidth
-						/>
-					</DialogContent>
+									<div className={movementAlarmsclasses.button}>
+										<IconButton aria-label='Delete'>
+											<Icon>delete</Icon>
+										</IconButton>
+									</div>
 
-					<DialogContent>
-						<TextField
-							id='time'
-							label='Alarmen aktiveres'
-							type='time'
-							defaultValue='23:30'
-							fullWidth
-						/>
-					</DialogContent>
+									<div className={movementAlarmsclasses.button}>
+										<IconButton aria-label='Delete'>
+											<Icon>edit</Icon>
+										</IconButton>
+									</div>
 
-					<DialogContent>
-						<TextField
-							id='time'
-							label='Alarmen deaktiveres'
-							type='time'
-							defaultValue='23:30'
-							fullWidth
-						/>
-					</DialogContent>
+								</ListItem>
+							)
+						})}
+					</List>
 
-					<DialogContent>
-						<List>
-							<ListItem
-								dense
-								button
-								// onClick={this.handleToggle(value)}
-						            >
-								<Checkbox
-									// checked={this.state.checked.indexOf(value) !== -1}
-									tabIndex={-1}
-									disableRipple
-						              />
-								<ListItemText primary='Alarmen skal altid være aktiveret' />
-							</ListItem>
-						</List>
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby='form-dialog-title'
+					>
+						<DialogTitle id='form-dialog-title'>Opsæt Bevægelsesalarm</DialogTitle>
 
-					</DialogContent>
+						<DialogContent>
+							<TextField
+								onChange={this.handleChange('name')}
+								autoFocus
+								margin='dense'
+								id='name'
+								label='Alarmens navn'
+								fullWidth
+							/>
+						</DialogContent>
 
-					<DialogActions classes={{ root: classes.dialogActions }}>
+						<DialogContent>
+							<TextField
+								onChange={this.handleChange('startTime')}
+								id='time-start'
+								defaultValue='06:30'
+								label='Alarmen aktiveres'
+								type='time'
 
-						<Button onClick={this.handleClose} color='primary' raised >
-								Gem
-						</Button>
-						<Button onClick={this.handleClose} color='primary' raised >
-								Annuler
-						</Button>
+								fullWidth
+							/>
+						</DialogContent>
 
-					</DialogActions>
+						<DialogContent>
+							<TextField
+								onChange={this.handleChange('stopTime')}
+								id='time-end'
+								defaultValue='07:30'
+								label='Alarmen deaktiveres'
+								type='time'
 
-					<DialogContent>
-						<Grid container spacing={0} justify='flex-end' >
-							<Grid item xs={1}>
-								<Icon color='primary' classes={{ root: classes.editLink }}>edit</Icon>
+								fullWidth
+							/>
+						</DialogContent>
+
+						<DialogContent>
+							<List>
+								<ListItem
+									dense
+									button
+									onClick={() => { this.handleToggle() }}
+								>
+									<Checkbox
+										// checked={this.state.checked.indexOf(value) !== -1}
+										// onClick=
+										tabIndex={-1}
+										disableRipple
+									/>
+									<ListItemText primary='Alarmen skal altid være aktiveret' />
+								</ListItem>
+							</List>
+
+						</DialogContent>
+
+						<DialogActions classes={{ root: classes.dialogActions }}>
+
+							<Button color='primary' onClick={() => { this.handleSubmit() }} raised >
+									Gem
+							</Button>
+							<Button onClick={this.handleClose} color='primary' raised >
+									Annuler
+							</Button>
+
+						</DialogActions>
+
+						<DialogContent>
+							<Grid container spacing={0} justify='flex-end' >
+								<Grid item xs={1}>
+									<Icon color='primary' classes={{ root: classes.editLink }}>edit</Icon>
+								</Grid>
+								<Grid item xs={7}>
+
+									<Typography type='body1' align='right' color='primary' classes={{ root: classes.editLink }}>
+														Rediger tilknyttede enheder
+									</Typography>
+
+								</Grid>
 							</Grid>
-							<Grid item xs={7}>
+						</DialogContent>
+					</Dialog>
 
-								<Typography type='body1' align='right' color='primary' classes={{ root: classes.editLink }}>
-													Rediger tilknyttede enheder
-								</Typography>
-
-							</Grid>
-						</Grid>
-					</DialogContent>
-				</Dialog>
-
-				<Grid container alignItems='flex-end' justify='flex-end'>
-					<span className={movementAlarmsclasses.fabButtonWrapper}>
-						<Button fab color='accent' aria-label='add' onClick={this.handleClickOpen}>
-							<Icon classes={{ root: classes.whiteIcon }}>add</Icon>
-						</Button>
-					</span>
-				</Grid>
-			</Paper>
-		</Grid>
-	)
-}
+					<Grid container alignItems='flex-end' justify='flex-end'>
+						<span className={movementAlarmsclasses.fabButtonWrapper}>
+							<Button fab color='accent' aria-label='add' onClick={this.handleClickOpen}>
+								<Icon classes={{ root: classes.whiteIcon }}>add</Icon>
+							</Button>
+						</span>
+					</Grid>
+				</Paper>
+			</Grid>
+		)
+	}
 }
 
 export default withStyles(styles)(MovementAlarms)
