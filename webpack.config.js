@@ -159,8 +159,8 @@ const config = {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							// includePaths: ['src/lib/styles'],
-							// data: `@import 'common.scss';`,
+							includePaths: ['src/layout'],
+							data: `@import 'common.scss';`,
 						},
 					}],
 				}),

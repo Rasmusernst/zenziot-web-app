@@ -11,6 +11,7 @@ import Hidden from 'material-ui/Hidden'
 import { actions as overviewActions } from '../../stores/overview'
 
 import Statusbox from '../../components/StatusBox/'
+import Placeholder from '../../components/StatusBoxPlaceholder/'
 
 import Overviewclasses from './style.scss'
 
@@ -69,23 +70,36 @@ class Overview extends PureComponent {
 					</Grid>
 				</Hidden>
 
-				<Grid container spacing={0} >
+				{
+					overview.isInitialized
+						? <Grid container spacing={0} >
+							<Statusbox headline={'Områdealarmer'}
+								hasMessage={overview.isInitialized && areaAlarms.count() !== 0}
+								messages={areaAlarms}
+								isInitialized={overview.isInitialized}
+							/>
 
-					<Statusbox headline={'Områdealarmer'}
-						hasMessage={overview.isInitialized && areaAlarms.count() !== 0}
-						messages={areaAlarms}
-					/>
+							<Statusbox headline={'Bevægelsesalarmer'}
+								hasMessage={overview.isInitialized && movementAlarms.count() !== 0}
+								messages={movementAlarms}
+								isInitialized={overview.isInitialized}
+							/>
 
-					<Statusbox headline={'Bevægelsesalarmer'}
-						hasMessage={overview.isInitialized && movementAlarms.count() !== 0}
-						messages={movementAlarms}
-					/>
+							<Statusbox headline={'Driftsinformation'}
+								hasMessage={overview.isInitialized && operationalAlarms.count() !== 0}
+								messages={operationalAlarms}
+								isInitialized={overview.isInitialized}
+							/>
+						</Grid>
 
-					<Statusbox headline={'Driftsinformation'}
-						hasMessage={overview.isInitialized && operationalAlarms.count() !== 0}
-						messages={operationalAlarms}
-					/>
-				</Grid>
+						: <Grid container spacing={0} >
+							<Placeholder />
+							<Placeholder />
+							<Placeholder />
+						</Grid>
+
+				}
+
 			</Grid>
 		)
 	}

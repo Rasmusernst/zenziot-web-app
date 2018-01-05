@@ -13,6 +13,7 @@ export const SETAREAALARMS = 'TRACKERS/SETAREAALARMS'
 export const SETMOVEMENTALARMS = 'TRACKERS/SETMOVEMENTALARMS'
 export const SETALARMPERSONS = 'TRACKERS/SETALARMPERSONS'
 export const SETISINITIALIZED = 'TRACKERS/SETISINITIALIZED'
+export const SETMOVEMENTALARM = 'TRACKERS/SETMOVEMENTALARM'
 
 // ------------------------------------
 // initialState
@@ -23,6 +24,7 @@ const State = Record({
 	trackers: null,
 	areaAlarms: null,
 	movementAlarms: null,
+	movementAlarm: null,
 	alarmPersons: null,
 	isInitialized: false,
 }, 'trackers')
@@ -35,6 +37,7 @@ export const actions = {
 	setError: (payload) => ({ type: SET_ERROR, payload }),
 
 	getTrackers: () => async (dispatch) => {
+		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'GET',
 			url: 'http://zenzapi.azurewebsites.net/api/zenztrackers',
@@ -71,6 +74,7 @@ export const actions = {
 			})
 	},
 	getMovementAlarms: () => async (dispatch) => {
+		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'GET',
 			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/',
@@ -88,8 +92,31 @@ export const actions = {
 				console.log(error)
 			})
 	},
+
+	getMovementAlarm: (alarmId) => async (dispatch) => {
+		dispatch({ type: SETISINITIALIZED, payload: false })
+		console.log(alarmId)
+		axios({
+			method: 'GET',
+			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
+		})
+			.then(function (response) {
+				console.log(response)
+				dispatch({ type: SETMOVEMENTALARM, payload: response.data })
+			})
+
+			.catch(function (error) {
+				console.log(error)
+			})
+	},
+
 	createMovementAlarm: (name, startTime, stopTime) => async (dispatch) => {
-		console.log(name, startTime, stopTime)
+		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'POST',
 			url: 'http://zenzapi.azurewebsites.net/api/movementalarms',
@@ -99,9 +126,7 @@ export const actions = {
 				EndTime: stopTime,
 			},
 			headers: {
-
 				'Content-Type': 'application/json',
-
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
@@ -112,6 +137,51 @@ export const actions = {
 				console.log(error)
 			})
 	},
+
+	editMovementAlarm: (name, startTime, stopTime) => async (dispatch) => {
+		console.log(name, startTime, stopTime)
+		axios({
+			method: 'PATCH',
+			url: 'http://zenzapi.azurewebsites.net/api/movementalarms',
+			data: {
+				name: name,
+				StartTime: startTime,
+				EndTime: stopTime,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
+		})
+			.then(function (response) {
+				console.log(response)
+				return dispatch(actions.getMovementAlarms())
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+	},
+	deleteMovementAlarm: (alarmId) => async (dispatch) => {
+		dispatch({ type: SETISINITIALIZED, payload: false })
+		console.log(alarmId)
+		axios({
+			method: 'DELETE',
+			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
+		})
+			.then(function (response) {
+				console.log(response)
+				return dispatch(actions.getMovementAlarms())
+			})
+
+			.catch(function (error) {
+				console.log(error)
+			})
+	},
+
 }
 
 // ------------------------------------
@@ -124,7 +194,14 @@ export default handleActions({
 		isInitialized: true,
 	}),
 	[SETAREAALARMS]: (state, { payload }) => state.merge({ areaAlarms: payload }),
-	[SETMOVEMENTALARMS]: (state, { payload }) => state.merge({ movementAlarms: payload }),
+	[SETMOVEMENTALARMS]: (state, { payload }) => state.merge({
+		movementAlarms: payload,
+		isInitialized: true,
+	}),
+	[SETMOVEMENTALARM]: (state, { payload }) => state.merge({
+		movementAlarm: payload,
+		isInitialized: true,
+	}),
 	[SETALARMPERSONS]: (state, { payload }) => state.merge({ alarmPersons: payload }),
 	[SETISINITIALIZED]: (state, { payload }) => state.merge({ isInitialized: payload }),
 }, initialState)

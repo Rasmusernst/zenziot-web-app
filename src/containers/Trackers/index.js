@@ -40,15 +40,21 @@ class Trackers extends PureComponent {
 		getTrackers: PropTypes.func,
 		getMovementAlarms: PropTypes.func,
 		createMovementAlarm: PropTypes.func,
+		editMovementAlarm: PropTypes.func,
+		getMovementAlarm: PropTypes.func,
+		deleteMovementAlarm: PropTypes.func,
 		classes: PropTypes.object.isRequired,
 	}
+		@autobind handleCreateMovementAlarm(name, startTime, stopTime) { this.props.createMovementAlarm(name, startTime, stopTime) }
+		@autobind handleEditMovementAlarm(name, startTime, stopTime) { this.props.editMovementAlarm(name, startTime, stopTime) }
+		@autobind handleGetMovementAlarm(alarmId) { this.props.getMovementAlarm(alarmId) }
+		@autobind handleDeleteMovementAlarm(alarmId) { this.props.deleteMovementAlarm(alarmId) }
 
-	@autobind handleCreateMovementAlarm(name, startTime, stopTime) { this.props.createMovementAlarm(name, startTime, stopTime) }
 
-	componentDidMount() {
-		this.props.getTrackers()
-		this.props.getMovementAlarms()
-	}
+		componentDidMount() {
+			this.props.getTrackers()
+			this.props.getMovementAlarms()
+		}
 
 	state = {
 		value: 0,
@@ -101,7 +107,13 @@ class Trackers extends PureComponent {
 						</Typography>
 					}
 					{value === 2 &&
-					<MovementAlarms trackers={trackers} onCreateMovementAlarm={this.handleCreateMovementAlarm} />
+					<MovementAlarms trackers={trackers}
+						onCreateMovementAlarm={this.handleCreateMovementAlarm}
+						onEditMovementAlarm={this.handleEditMovementAlarm}
+						onGetMovementAlarm={this.handleGetMovementAlarm}
+						onDeleteMovementAlarm={this.handleDeleteMovementAlarm}
+					/>
+
 					}
 					{value === 3 &&
 						<Typography type='headline'>

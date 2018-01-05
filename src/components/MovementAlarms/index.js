@@ -58,15 +58,21 @@ class MovementAlarms extends PureComponent {
 		classes: PropTypes.object.isRequired,
 		trackers: PropTypes.object,
 		onCreateMovementAlarm: PropTypes.func,
+		onEditMovementAlarm: PropTypes.func,
+		onGetMovementAlarm: PropTypes.func,
+		onDeleteMovementAlarm: PropTypes.func,
 	}
 
 	state = {
 		open: false,
-		name: null,
-		startTime: null,
-		stopTime: null,
+		name: 'Navn',
+		startTime: '06:30',
+		stopTime: '08:30',
 		checked: false,
 		alarmId: null,
+		formcontentLoading: false,
+		deleteDialogOpen: false,
+		idToDelete: null,
 	}
 
 	handleClickOpen = () => {
@@ -74,7 +80,17 @@ class MovementAlarms extends PureComponent {
 	}
 
 	handleClose = () => {
-		this.setState({ open: false })
+		this.setState({
+			open: false,
+			name: 'Navn',
+			startTime: '06:30',
+			stopTime: '08:30',
+			checked: false,
+			alarmId: null,
+			formcontentLoading: false,
+			deleteDialogOpen: false,
+			idToDelete: null,
+		})
 	}
 
 	handleChange = name => event => {
@@ -84,14 +100,41 @@ class MovementAlarms extends PureComponent {
 		})
 	}
 
+	componentDidUpdate() {
+		const { trackers } = this.props
+		console.log(trackers.isInitialized, this.state.formcontentLoading)
+		this.populateForm()
+	}
+
+	populateForm() {
+		const { trackers } = this.props
+		if (trackers.isInitialized && this.state.formcontentLoading) {
+			console.log('fired')
+			this.setState({
+				open: true,
+				name: trackers.movementAlarm.get('name'),
+				startTime: trackers.movementAlarm.get('startTime'),
+				stopTime: trackers.movementAlarm.get('endTime'),
+				checked: trackers.movementAlarm.get('startTime') === trackers.movementAlarm.get('endTime'),
+				alarmId: trackers.movementAlarm.get('id'),
+				formcontentLoading: false,
+
+			})
+		}
+	}
+
+	populateEditForm(alarmId) {
+		this.setState({ formcontentLoading: true })
+		this.props.onGetMovementAlarm(alarmId)
+	}
+
 	handleSubmit() {
 		const { name, startTime, stopTime, checked, alarmId } = this.state
 		const checkedStartTime = checked ? '00:00:00' : startTime + ':00'
 		const checkedStopTime = checked ? '00:00:00' : stopTime + ':00'
 
-		console.log(name, checkedStartTime, checkedStopTime, alarmId)
 		if (alarmId !== null) {
-			this.props.onCreateMovementAlarm(name, checkedStartTime, checkedStopTime, alarmId)
+			this.props.onEditMovementAlarm(name, checkedStartTime, checkedStopTime, alarmId)
 		}
 		this.props.onCreateMovementAlarm(name, checkedStartTime, checkedStopTime)
 		this.handleClose()
@@ -101,9 +144,20 @@ class MovementAlarms extends PureComponent {
 		this.setState({ checked: !this.state.checked })
 	}
 
+	handleOpenDeleteDialog(alarmId) {
+		this.setState({
+			deleteDialogOpen: true,
+			idToDelete: alarmId,
+		})
+	}
+	handleDelete() {
+		this.props.onDeleteMovementAlarm(this.state.idToDelete)
+		this.handleClose()
+	}
+
 	render() {
 		const { classes, trackers } = this.props
-		const { open, name, startTime, stopTime, checked, alarmId } = this.state
+		const { name, startTime, stopTime, checked, deleteDialogOpen } = this.state
 		return (
 
 			<Grid item xs={12} md={8} lg={6} xl={4}>
@@ -122,13 +176,13 @@ class MovementAlarms extends PureComponent {
 									<ListItemText	primary={n.get('name')} />
 
 									<div className={movementAlarmsclasses.button}>
-										<IconButton aria-label='Delete'>
+										<IconButton aria-label='Delete' onClick={() => { this.handleOpenDeleteDialog(n.get('id')) }}>
 											<Icon>delete</Icon>
 										</IconButton>
 									</div>
 
 									<div className={movementAlarmsclasses.button}>
-										<IconButton aria-label='Delete'>
+										<IconButton aria-label='Edit' onClick={() => { this.populateEditForm(n.get('id')) }}>
 											<Icon>edit</Icon>
 										</IconButton>
 									</div>
@@ -138,6 +192,7 @@ class MovementAlarms extends PureComponent {
 						})}
 					</List>
 
+					{/* Form for editing alarm */}
 					<Dialog
 						open={this.state.open}
 						onClose={this.handleClose}
@@ -150,6 +205,7 @@ class MovementAlarms extends PureComponent {
 								onChange={this.handleChange('name')}
 								autoFocus
 								margin='dense'
+								value={name}
 								id='name'
 								label='Alarmens navn'
 								fullWidth
@@ -160,10 +216,9 @@ class MovementAlarms extends PureComponent {
 							<TextField
 								onChange={this.handleChange('startTime')}
 								id='time-start'
-								defaultValue='06:30'
+								value={startTime}
 								label='Alarmen aktiveres'
 								type='time'
-
 								fullWidth
 							/>
 						</DialogContent>
@@ -172,10 +227,9 @@ class MovementAlarms extends PureComponent {
 							<TextField
 								onChange={this.handleChange('stopTime')}
 								id='time-end'
-								defaultValue='07:30'
+								value={stopTime}
 								label='Alarmen deaktiveres'
 								type='time'
-
 								fullWidth
 							/>
 						</DialogContent>
@@ -188,7 +242,7 @@ class MovementAlarms extends PureComponent {
 									onClick={() => { this.handleToggle() }}
 								>
 									<Checkbox
-										// checked={this.state.checked.indexOf(value) !== -1}
+										checked={checked}
 										// onClick=
 										tabIndex={-1}
 										disableRipple
@@ -224,6 +278,28 @@ class MovementAlarms extends PureComponent {
 								</Grid>
 							</Grid>
 						</DialogContent>
+					</Dialog>
+
+					<Dialog
+						open={deleteDialogOpen}
+						onClose={this.handleClose}
+						aria-labelledby='alert-dialog-title'
+						aria-describedby='alert-dialog-description'
+					>
+						<DialogTitle id='alert-dialog-title'>{'Slet Alarm?'}</DialogTitle>
+						<DialogContent>
+							<DialogContentText id='alert-dialog-description'>
+								Hvis du sletter alarmen vil den også blive slettet fra alle tilknyttede enheder.
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={() => { this.handleDelete() }} color='primary'>
+								OK
+							</Button>
+							<Button onClick={this.handleClose} color='primary' autoFocus>
+								Annuler
+							</Button>
+						</DialogActions>
 					</Dialog>
 
 					<Grid container alignItems='flex-end' justify='flex-end'>

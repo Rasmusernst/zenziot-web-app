@@ -9,6 +9,8 @@ import List, { ListItem, ListItemText } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import Divider from 'material-ui/Divider'
 
+import ReactPlaceholder, { RectShape, TextRow } from 'react-placeholder'
+
 import statusBoxclasses from './style.scss'
 
 const styles = theme => ({
@@ -38,12 +40,15 @@ class StatusBox extends PureComponent {
 		headline: PropTypes.string.isRequired,
 		hasMessage: PropTypes.bool.isRequired,
 		messages: PropTypes.object.isRequired,
+		isInitialized: PropTypes.bool.isRequired,
 	}
 
-	handleChange = name => event => {
-		this.setState({
-			[name]: event.target.value,
-		})
+	state = {
+		ready: false,
+	}
+
+	componentDidMount() {
+		this.setState({ ready: true	})
 	}
 
 	handleAlarmMessage(message) {
@@ -102,7 +107,9 @@ class StatusBox extends PureComponent {
 	}
 
 	render() {
-		const { classes, headline, hasMessage, messages } = this.props
+		const { classes, headline, hasMessage, messages, isInitialized } = this.props
+		console.log(isInitialized)
+		const tmpHeadline = isInitialized ? headline : 'Headline'
 
 		return (
 
@@ -113,9 +120,10 @@ class StatusBox extends PureComponent {
 						<Grid container spacing={0} >
 							<Grid item xs={8}>
 								<Typography type='title' classes={{	root: classes.statusHeadline }}>
-									{headline}
+									{tmpHeadline}
 								</Typography>
 							</Grid>
+
 							<Grid item xs={4}>
 								<Typography align='right' classes={{	root: classes.statusHeadline }}>
 									<Icon>help</Icon>
@@ -136,33 +144,34 @@ class StatusBox extends PureComponent {
 					</div>
 					{
 						hasMessage &&
-						<Paper>
-							<List>
-								{
-									messages.map((message) =>
-										<div key={message.get('deviceId')}>
-											<ListItem button>
-												<Grid container spacing={0} >
-													<Avatar>
-														<Icon>folder</Icon>
-													</Avatar>
-													<Grid item xs={9}>
-														<Typography type='title' classes={{	root: classes.msgHeadline }}>
+							<Paper>
+								<List>
+									{
+										messages.map((message) =>
+											<div key={message.get('deviceId')}>
+												<ListItem button>
+													<Grid container spacing={0} >
+														<Avatar>
+															<Icon>folder</Icon>
+														</Avatar>
+														<Grid item xs={9}>
+															<Typography type='title' classes={{	root: classes.msgHeadline }}>
 															Enhed: {message.get('deviceName')}
-														</Typography>
-														{	this.handleAlarmMessage(message)}
+															</Typography>
+															{	this.handleAlarmMessage(message)}
+														</Grid>
 													</Grid>
-												</Grid>
-											</ListItem>
-											<Divider inset />
-										</div>,
-									)
-								}
-							</List>
-						</Paper>
+												</ListItem>
+												<Divider inset />
+											</div>,
+										)
+									}
+								</List>
+							</Paper>
 					}
 
 				</div>
+
 			</Grid>
 		)
 	}
