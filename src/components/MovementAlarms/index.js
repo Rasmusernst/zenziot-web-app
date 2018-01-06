@@ -100,7 +100,9 @@ class MovementAlarms extends PureComponent {
 	}
 
 	componentDidUpdate() {
-		this.populateForm()
+		if (this.props.trackers.movementAlarm !== null && !this.isUndefined(this.props.trackers.movementAlarm)) {
+			this.populateForm()
+		}
 		this.handleErrors()
 	}
 
@@ -127,15 +129,19 @@ class MovementAlarms extends PureComponent {
 	handleSubmit() {
 		const { name, startTime, stopTime, checked, alarmId } = this.state
 		const localName = name
-		const checkedStartTime = checked ? '00:00:00' : startTime + ':00'
-		const checkedStopTime = checked ? '00:00:00' : stopTime + ':00'
+		let formattedStartTime = startTime
+		let formattedStopTime = stopTime
 		const localAlarmId = alarmId
 		this.handleClose()
 
 		if (localAlarmId !== null) {
-			this.props.onEditMovementAlarm(localName, checkedStartTime, checkedStopTime, localAlarmId)
+			formattedStartTime = checked ? '00:00:00' : startTime
+			formattedStopTime = checked ? '00:00:00' : stopTime
+			return this.props.onEditMovementAlarm(localName, formattedStartTime, formattedStopTime, localAlarmId)
 		}
-		this.props.onCreateMovementAlarm(localName, checkedStartTime, checkedStopTime)
+		formattedStartTime = checked ? '00:00:00' : startTime + ':00'
+		formattedStopTime = checked ? '00:00:00' : stopTime + ':00'
+		this.props.onCreateMovementAlarm(localName, formattedStartTime, formattedStopTime)
 	}
 
 	handleToggle = () => {
@@ -167,36 +173,33 @@ class MovementAlarms extends PureComponent {
 
 	render() {
 		const { classes, trackers } = this.props
-		const { name, startTime, stopTime, checked, deleteDialogOpen, snackbarOpen, idToDelete } = this.state
+		const { name, startTime, stopTime, checked, deleteDialogOpen, snackbarOpen } = this.state
 		return (
 
 			<Grid item xs={12} md={8} lg={6} xl={4}>
 				<Paper classes={{ root: classes.trackerListPaper }}>
+					
 					<List>
 						<ListItem>
 							<Typography type='subheading'>
 												Alle Bevægelsesalarmer
 							</Typography>
-
 						</ListItem>
 						<Divider classes={{ root: classes.headlineDivider }} />
 						{trackers.isInitialized && trackers.movementAlarms.map(n => {
 							return (
 								<ListItem key={n.get('id')}>
 									<ListItemText	primary={n.get('name')} />
-
 									<div className={movementAlarmsclasses.button}>
 										<IconButton aria-label='Delete' onClick={() => { this.handleOpenDeleteDialog(n.get('id')) }}>
 											<Icon>delete</Icon>
 										</IconButton>
 									</div>
-
 									<div className={movementAlarmsclasses.button}>
 										<IconButton aria-label='Edit' onClick={() => { this.populateEditForm(n.get('id')) }}>
 											<Icon>edit</Icon>
 										</IconButton>
 									</div>
-
 								</ListItem>
 							)
 						})}
@@ -279,11 +282,9 @@ class MovementAlarms extends PureComponent {
 									<Icon color='primary' classes={{ root: classes.editLink }}>edit</Icon>
 								</Grid>
 								<Grid item xs={7}>
-
 									<Typography type='body1' align='right' color='primary' classes={{ root: classes.editLink }}>
 														Rediger tilknyttede enheder
 									</Typography>
-
 								</Grid>
 							</Grid>
 						</DialogContent>

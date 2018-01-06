@@ -38,6 +38,7 @@ class Trackers extends PureComponent {
 	static propTypes = {
 		trackers: PropTypes.object,
 		getTrackers: PropTypes.func,
+		getTrackerList: PropTypes.func,
 		getMovementAlarms: PropTypes.func,
 		createMovementAlarm: PropTypes.func,
 		editMovementAlarm: PropTypes.func,
@@ -53,6 +54,7 @@ class Trackers extends PureComponent {
 		componentDidMount() {
 			this.props.getTrackers()
 			this.props.getMovementAlarms()
+			this.props.getTrackerList()
 		}
 
 	state = {
@@ -99,6 +101,7 @@ class Trackers extends PureComponent {
 
 					{value === 0 &&
 						<TrackerList trackers={trackers} />
+
 					}
 					{value === 1 &&
 						<Typography type='headline'>

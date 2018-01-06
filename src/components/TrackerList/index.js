@@ -27,7 +27,14 @@ const styles = theme => ({
 class TrackerList extends PureComponent {
 	static propTypes = {
 		classes: PropTypes.object.isRequired,
-		trackers: PropTypes.object,
+		trackerList: PropTypes.object,
+	}
+
+	alarmIsActive(areaAlarm, movementAlarm) {
+		console.log(areaAlarm, movementAlarm)
+		const activated = areaAlarm !== null || movementAlarm !== null
+		console.log(activated)
+		return activated
 	}
 
 	render() {
@@ -58,30 +65,42 @@ class TrackerList extends PureComponent {
 							</TableHead>
 							<Hidden lgDown>
 								<TableBody >
-									{trackers.isInitialized && trackers.trackers.map(n => {
-										return (
-											<TableRow key={n.get('id')} hover classes={{ hover: classes.trackersTableRow }}>
-												<TableCell>
-													<Icon>help</Icon>
-												</TableCell>
-												<TableCell>
-													{n.get('name')}
-												</TableCell>
-												<TableCell>
-												-
-												</TableCell>
-												<TableCell>
-												-
-												</TableCell>
-												<TableCell>
-												-
-												</TableCell>
-												<TableCell>
-												-
-												</TableCell>
-											</TableRow>
-										)
-									})}
+									{trackers.isInitialized && trackers.trackerList !== null &&
+										trackers.trackerList.map(n => {
+											return (
+												<TableRow key={n.get('deviceId')} hover classes={{ hover: classes.trackersTableRow }}>
+													<TableCell>
+														<Icon>directions_car</Icon>
+													</TableCell>
+													<TableCell>
+														{n.get('deviceName')}
+													</TableCell>
+													<TableCell>
+														{
+															this.alarmIsActive(n.getIn(['areaAlarm', 'activated']), n.getIn(['movementAlarm', 'activated'])) &&
+															<Icon>warning</Icon>
+														}
+													</TableCell>
+													<TableCell>
+														{n.getIn(['areaAlarm', 'name'])}
+													</TableCell>
+													<TableCell>
+
+														{n.getIn(['movementAlarm', 'name'])}
+													</TableCell>
+													<TableCell>
+														{n.getIn(['alarmPersons']).map(p => {
+															return (
+																<span>{p} </span>
+															)
+														},
+														)
+
+														}
+													</TableCell>
+												</TableRow>
+											)
+										})}
 								</TableBody>
 							</Hidden>
 							<Hidden lgUp>
@@ -90,7 +109,7 @@ class TrackerList extends PureComponent {
 										return (
 											<TableRow key={n.get('id')} hover classes={{ hover: classes.trackersTableRow }}>
 												<TableCell>
-													<Icon>help</Icon>
+													<Icon>directions_car</Icon>
 												</TableCell>
 												<TableCell>
 													{n.get('name')}

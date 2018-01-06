@@ -14,6 +14,7 @@ export const SETMOVEMENTALARMS = 'TRACKERS/SETMOVEMENTALARMS'
 export const SETALARMPERSONS = 'TRACKERS/SETALARMPERSONS'
 export const SETISINITIALIZED = 'TRACKERS/SETISINITIALIZED'
 export const SETMOVEMENTALARM = 'TRACKERS/SETMOVEMENTALARM'
+export const SETTRACKERLIST = 'TRACKERS/SETTRACKERLIST'
 
 // ------------------------------------
 // initialState
@@ -22,11 +23,13 @@ export const SETMOVEMENTALARM = 'TRACKERS/SETMOVEMENTALARM'
 const State = Record({
 	error: null,
 	trackers: null,
+	trackerList: null,
 	areaAlarms: null,
 	movementAlarms: null,
 	movementAlarm: null,
 	alarmPersons: null,
 	isInitialized: false,
+	formContentSubmitted: false,
 }, 'trackers')
 
 const initialState = State()
@@ -73,6 +76,26 @@ export const actions = {
 				console.log(error)
 			})
 	},
+	getTrackerList: () => async (dispatch) => {
+		dispatch({ type: SET_ERROR, payload: false })
+		dispatch({ type: SETISINITIALIZED, payload: false })
+		axios({
+			method: 'GET',
+			url: 'http://zenzapi.azurewebsites.net/api/zenztrackers/GetDevicesList',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
+		})
+			.then(function (response) {
+				dispatch({ type: SETTRACKERLIST, payload: response.data })
+			})
+
+			.catch(function (error) {
+				console.log(error)
+			})
+	},
 	getMovementAlarms: () => async (dispatch) => {
 		dispatch({ type: SET_ERROR, payload: false })
 		dispatch({ type: SETISINITIALIZED, payload: false })
@@ -107,7 +130,6 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				console.log(response)
 				dispatch({ type: SETMOVEMENTALARM, payload: response.data })
 			})
 
@@ -131,7 +153,6 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				console.log(response)
 				return dispatch(actions.getMovementAlarms())
 			})
 			.catch(function (error) {
@@ -142,7 +163,6 @@ export const actions = {
 	},
 
 	editMovementAlarm: (name, startTime, stopTime, alarmId) => async (dispatch) => {
-		console.log(name, startTime, stopTime, alarmId)
 		axios({
 			method: 'PATCH',
 			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
@@ -168,7 +188,6 @@ export const actions = {
 	},
 	deleteMovementAlarm: (alarmId) => async (dispatch) => {
 		dispatch({ type: SETISINITIALIZED, payload: false })
-		console.log(alarmId)
 		axios({
 			method: 'DELETE',
 			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
@@ -179,7 +198,6 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				console.log(response)
 				dispatch({ type: SETMOVEMENTALARM, payload: null })
 				return dispatch(actions.getMovementAlarms())
 			})
@@ -200,6 +218,10 @@ export default handleActions({
 	[SET_ERROR]: (state, { payload }) => state.set('error', fromJS(payload)),
 	[SETTRACKERS]: (state, { payload }) => state.merge({
 		trackers: payload,
+		isInitialized: true,
+	}),
+	[SETTRACKERLIST]: (state, { payload }) => state.merge({
+		trackerList: payload,
 		isInitialized: true,
 	}),
 	[SETAREAALARMS]: (state, { payload }) => state.merge({ areaAlarms: payload }),

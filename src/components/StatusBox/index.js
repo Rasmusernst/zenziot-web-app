@@ -81,7 +81,7 @@ class StatusBox extends PureComponent {
 		if (message.get('batteryPercentage') <= 10 && message.get('signalStrength') === 2) {
 			return (
 				<ListItemText
-					primary='Der er flere drifstbeskeder for enheden'
+					primary='Der er flere driftsbeskeder for enheden'
 					secondary='Klik for at få hjælp til at løse problemerne'
 				/>
 			)
@@ -150,7 +150,7 @@ class StatusBox extends PureComponent {
 												<ListItem button>
 													<Grid container spacing={0} >
 														<Avatar>
-															<Icon>folder</Icon>
+															<Icon>directions_car</Icon>
 														</Avatar>
 														<Grid item xs={9}>
 															<Typography type='title' classes={{	root: classes.msgHeadline }}>
