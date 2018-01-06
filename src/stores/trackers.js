@@ -74,6 +74,7 @@ export const actions = {
 			})
 	},
 	getMovementAlarms: () => async (dispatch) => {
+		dispatch({ type: SET_ERROR, payload: false })
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'GET',
@@ -135,14 +136,16 @@ export const actions = {
 			})
 			.catch(function (error) {
 				console.log(error)
+				dispatch({ type: SET_ERROR, payload: true })
+				return dispatch(actions.getMovementAlarms())
 			})
 	},
 
-	editMovementAlarm: (name, startTime, stopTime) => async (dispatch) => {
-		console.log(name, startTime, stopTime)
+	editMovementAlarm: (name, startTime, stopTime, alarmId) => async (dispatch) => {
+		console.log(name, startTime, stopTime, alarmId)
 		axios({
 			method: 'PATCH',
-			url: 'http://zenzapi.azurewebsites.net/api/movementalarms',
+			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
 			data: {
 				name: name,
 				StartTime: startTime,
@@ -154,10 +157,13 @@ export const actions = {
 		})
 			.then(function (response) {
 				console.log(response)
+				dispatch({ type: SETMOVEMENTALARM, payload: null })
 				return dispatch(actions.getMovementAlarms())
 			})
 			.catch(function (error) {
 				console.log(error)
+				dispatch({ type: SET_ERROR, payload: true })
+				return dispatch(actions.getMovementAlarms())
 			})
 	},
 	deleteMovementAlarm: (alarmId) => async (dispatch) => {
@@ -174,11 +180,14 @@ export const actions = {
 		})
 			.then(function (response) {
 				console.log(response)
+				dispatch({ type: SETMOVEMENTALARM, payload: null })
 				return dispatch(actions.getMovementAlarms())
 			})
 
 			.catch(function (error) {
 				console.log(error)
+				dispatch({ type: SET_ERROR, payload: true })
+				return dispatch(actions.getMovementAlarms())
 			})
 	},
 

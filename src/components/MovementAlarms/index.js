@@ -8,7 +8,7 @@ import Typography from 'material-ui/Typography'
 import { withStyles } from 'material-ui/styles'
 import Icon from 'material-ui/Icon'
 import Checkbox from 'material-ui/Checkbox'
-
+import Snackbar from 'material-ui/Snackbar'
 import Dialog, {
 	DialogActions,
 	DialogContent,
@@ -27,8 +27,6 @@ import List, {
 	ListItem,
 	ListItemText,
 } from 'material-ui/List'
-
-import Hidden from 'material-ui/Hidden'
 
 import movementAlarmsclasses from './style.scss'
 
@@ -65,6 +63,7 @@ class MovementAlarms extends PureComponent {
 
 	state = {
 		open: false,
+		snackbarOpen: false,
 		name: 'Navn',
 		startTime: '06:30',
 		stopTime: '08:30',
@@ -82,6 +81,7 @@ class MovementAlarms extends PureComponent {
 	handleClose = () => {
 		this.setState({
 			open: false,
+			snackbarOpen: false,
 			name: 'Navn',
 			startTime: '06:30',
 			stopTime: '08:30',
@@ -94,22 +94,19 @@ class MovementAlarms extends PureComponent {
 	}
 
 	handleChange = name => event => {
-		console.log(this.state)
 		this.setState({
 			[name]: event.target.value,
 		})
 	}
 
 	componentDidUpdate() {
-		const { trackers } = this.props
-		console.log(trackers.isInitialized, this.state.formcontentLoading)
 		this.populateForm()
+		this.handleErrors()
 	}
 
 	populateForm() {
 		const { trackers } = this.props
 		if (trackers.isInitialized && this.state.formcontentLoading) {
-			console.log('fired')
 			this.setState({
 				open: true,
 				name: trackers.movementAlarm.get('name'),
@@ -118,7 +115,6 @@ class MovementAlarms extends PureComponent {
 				checked: trackers.movementAlarm.get('startTime') === trackers.movementAlarm.get('endTime'),
 				alarmId: trackers.movementAlarm.get('id'),
 				formcontentLoading: false,
-
 			})
 		}
 	}
@@ -130,14 +126,16 @@ class MovementAlarms extends PureComponent {
 
 	handleSubmit() {
 		const { name, startTime, stopTime, checked, alarmId } = this.state
+		const localName = name
 		const checkedStartTime = checked ? '00:00:00' : startTime + ':00'
 		const checkedStopTime = checked ? '00:00:00' : stopTime + ':00'
-
-		if (alarmId !== null) {
-			this.props.onEditMovementAlarm(name, checkedStartTime, checkedStopTime, alarmId)
-		}
-		this.props.onCreateMovementAlarm(name, checkedStartTime, checkedStopTime)
+		const localAlarmId = alarmId
 		this.handleClose()
+
+		if (localAlarmId !== null) {
+			this.props.onEditMovementAlarm(localName, checkedStartTime, checkedStopTime, localAlarmId)
+		}
+		this.props.onCreateMovementAlarm(localName, checkedStartTime, checkedStopTime)
 	}
 
 	handleToggle = () => {
@@ -150,14 +148,26 @@ class MovementAlarms extends PureComponent {
 			idToDelete: alarmId,
 		})
 	}
+
 	handleDelete() {
 		this.props.onDeleteMovementAlarm(this.state.idToDelete)
 		this.handleClose()
 	}
 
+	isUndefined(value) {
+		var undef = void (0)
+		return value === undef
+	}
+
+	handleErrors() {
+		if (this.props.trackers.error && !this.isUndefined(this.props.trackers.error)) {
+			this.setState({ snackbarOpen: true })
+		}
+	}
+
 	render() {
 		const { classes, trackers } = this.props
-		const { name, startTime, stopTime, checked, deleteDialogOpen } = this.state
+		const { name, startTime, stopTime, checked, deleteDialogOpen, snackbarOpen, idToDelete } = this.state
 		return (
 
 			<Grid item xs={12} md={8} lg={6} xl={4}>
@@ -250,7 +260,6 @@ class MovementAlarms extends PureComponent {
 									<ListItemText primary='Alarmen skal altid være aktiveret' />
 								</ListItem>
 							</List>
-
 						</DialogContent>
 
 						<DialogActions classes={{ root: classes.dialogActions }}>
@@ -310,6 +319,17 @@ class MovementAlarms extends PureComponent {
 						</span>
 					</Grid>
 				</Paper>
+
+				<Snackbar
+					open={snackbarOpen}
+					onClose={this.handleClose}
+					autoHideDuration={6000}
+					SnackbarContentProps={{
+						'aria-describedby': 'message-id',
+					}}
+					message={<span id='message-id'> Der skete en fejl. Prøv venligst igen.</span>}
+				/>
+
 			</Grid>
 		)
 	}

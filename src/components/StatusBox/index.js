@@ -9,8 +9,6 @@ import List, { ListItem, ListItemText } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import Divider from 'material-ui/Divider'
 
-import ReactPlaceholder, { RectShape, TextRow } from 'react-placeholder'
-
 import statusBoxclasses from './style.scss'
 
 const styles = theme => ({
