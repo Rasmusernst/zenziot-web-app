@@ -24,6 +24,10 @@ const history = syncHistoryWithStore(browserHistory, store)
 // }
 const rootElement = document.getElementById('root')
 
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('./service-worker.js')
+}
+
 const render = () => {
 	// Render app
 	const App = require('./App').default

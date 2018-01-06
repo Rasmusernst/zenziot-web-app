@@ -10,7 +10,8 @@ import { actions as authActions } from '../../stores/auth'
 export default class EnsureLoaded extends PureComponent {
 	static propTypes = {
 		router: PropTypes.object.isRequired,
-		children: PropTypes.element.isRequired,
+		// children: PropTypes.element.isRequired,
+		children: PropTypes.node,
 		// getAccessToken: PropTypes.func,
 		ensureLoaded: PropTypes.func,
 		auth: PropTypes.object,

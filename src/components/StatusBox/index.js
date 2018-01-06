@@ -106,7 +106,6 @@ class StatusBox extends PureComponent {
 
 	render() {
 		const { classes, headline, hasMessage, messages, isInitialized } = this.props
-		console.log(isInitialized)
 		const tmpHeadline = isInitialized ? headline : 'Headline'
 
 		return (

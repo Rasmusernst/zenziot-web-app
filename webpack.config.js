@@ -9,6 +9,7 @@ const srcPath = path.join(__dirname, 'src') // joins all given path segments tog
 const distPath = path.join(__dirname, 'dist')
 const CompressionPlugin = require('compression-webpack-plugin')
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 
 const config = {
 	entry: {
@@ -27,12 +28,14 @@ const config = {
 	output: {
 		path: distPath,
 		filename: isDev ? '[name].js' : '[name].[chunkhash:8].js',
+		chunkFilename: isDev ? '[name].[id].js' : '[name].[id].[chunkhash:8].js',
 		hashDigest: 'hex',
 		publicPath: '/',
 		// Include comments with information about the modules - only for dev
 		pathinfo: isDev,
 		devtoolModuleFilenameTemplate: '[resource-path]',
 	},
+
 	plugins: [
 		// We always include the define plugin to define globals
 		new webpack.DefinePlugin({
@@ -47,13 +50,25 @@ const config = {
 			template: path.join(srcPath, 'index.html'),
 			filename: 'index.html',
 			inject: 'body',
+			serviceWorker: path.join(srcPath, '/service-worker.js'),
 		}),
 		// // fix for manually having to maintin a vendor bundle
 		// // https://github.com/webpack/webpack/issues/2372#issuecomment-213149173
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'vendor',
-			minChunks: ({ resource }) => /node_modules/.test(resource),
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	name: 'vendor',
+		// 	minChunks: ({ resource }) => /node_modules/.test(resource),
+		// }),
+
+		// Caching content via Service Worker - currently set to work on all pages.
+		new SWPrecacheWebpackPlugin({
+			cacheId: 'zenziot',
+			dontCacheBustUrlsMatching: /\.\w{8}\./,
+			filename: 'service-worker.js',
+			minify: true,
+			navigateFallback: path.join(srcPath, 'index.html'),
+			staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
 		}),
+
 		// new webpack.optimize.UglifyJsPlugin(),
 		// // for testing - remove before use
 		new CompressionPlugin({
@@ -69,7 +84,7 @@ const config = {
 				// For exporting all CSS to one external bundle
 				// Use the plugin to specify the resulting filename
 				new ExtractTextPlugin({ filename: '[name].[contenthash:hex:8].css' }),
-				new BundleAnalyzerPlugin(),
+				// new BundleAnalyzerPlugin(),
 			]
 			: [])
 		.concat(isDev ? [

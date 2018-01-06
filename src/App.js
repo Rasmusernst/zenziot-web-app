@@ -5,7 +5,7 @@ import { Router } from 'react-router'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 // import { blue, orange } from 'material-ui/colors'
 
-import zenziotTheme from './layout/muiTheme'
+import zenziotTheme from './layout/__muiTheme'
 import routes from './routes'
 
 export default class App extends Component {

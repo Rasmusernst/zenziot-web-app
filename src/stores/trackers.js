@@ -152,7 +152,7 @@ export const actions = {
 				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
-			.then(function (response) {
+			.then(function () {
 				return dispatch(actions.getMovementAlarms())
 			})
 			.catch(function (error) {
@@ -176,7 +176,6 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				console.log(response)
 				dispatch({ type: SETMOVEMENTALARM, payload: null })
 				return dispatch(actions.getMovementAlarms())
 			})
