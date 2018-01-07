@@ -42,28 +42,28 @@ export default class NavigationDrawer extends PureComponent {
 							<img src={logo} alt='ZenzIOT logo' />
 						</ListItem>
 
-						<ListItem button onClick={onShowOverview} className={path === '/' ? classes.highlight : null} >
-							<ListItemIcon className={path === '/' ? classes.highlight : null}>
+						<ListItem button onClick={onShowOverview} className={path === '/overview' ? classes.highlight : null} >
+							<ListItemIcon className={path === '/overview' ? classes.highlight : null}>
 								<Icon className='material-icons'>home</Icon>
 							</ListItemIcon>
 							<ListItemText primary='Overblik' />
 						</ListItem>
 
-						<ListItem button onClick={onShowTrackers}>
-							<ListItemIcon>
+						<ListItem button onClick={onShowTrackers} className={path === '/trackers' ? classes.highlight : null}>
+							<ListItemIcon className={path === '/trackers' ? classes.highlight : null}>
 								<Icon className='material-icons'>view_list</Icon>
 							</ListItemIcon>
 							<ListItemText primary='Mine enheder' />
 						</ListItem>
 
-						<ListItem button onClick={onShowFrontpage}>
+						<ListItem button onClick={onShowFrontpage} disabled>
 							<ListItemIcon>
 								<Icon className='material-icons'>map</Icon>
 							</ListItemIcon>
 							<ListItemText primary='Kort' />
 						</ListItem>
 
-						<ListItem button onClick={onShowFrontpage}>
+						<ListItem button onClick={onShowFrontpage} disabled>
 							<ListItemIcon>
 								<Icon className='material-icons'>account_circle</Icon>
 							</ListItemIcon>

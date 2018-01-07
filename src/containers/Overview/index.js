@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import { withStyles } from 'material-ui/styles'
 import Hidden from 'material-ui/Hidden'
+import Observer from 'react-intersection-observer'
 
 import { actions as overviewActions } from '../../stores/overview'
 
@@ -73,23 +74,49 @@ class Overview extends PureComponent {
 				{
 					overview.isInitialized
 						? <Grid container spacing={0} >
-							<Statusbox headline={'Områdealarmer'}
-								hasMessage={overview.isInitialized && areaAlarms.count() !== 0}
-								messages={areaAlarms}
-								isInitialized={overview.isInitialized}
-							/>
 
-							<Statusbox headline={'Bevægelsesalarmer'}
-								hasMessage={overview.isInitialized && movementAlarms.count() !== 0}
-								messages={movementAlarms}
-								isInitialized={overview.isInitialized}
-							/>
+							<Grid item xs={12} md={12} lg={4} xl={3}>
+								<Observer triggerOnce>
+									{ inView => (inView
+										?	<Statusbox headline={'Områdealarmer'}
+											hasMessage={overview.isInitialized && areaAlarms.count() !== 0}
+											messages={areaAlarms}
+											isInitialized={overview.isInitialized}
+										/>
+										: <Placeholder />
+									)}
 
-							<Statusbox headline={'Driftsinformation'}
-								hasMessage={overview.isInitialized && operationalAlarms.count() !== 0}
-								messages={operationalAlarms}
-								isInitialized={overview.isInitialized}
-							/>
+								</Observer>
+							</Grid>
+
+							<Grid item xs={12} md={12} lg={4} xl={3}>
+								<Observer triggerOnce>
+
+									{ inView => (inView
+										? <Statusbox headline={'Bevægelsesalarmer'}
+											hasMessage={overview.isInitialized && movementAlarms.count() !== 0}
+											messages={movementAlarms}
+											isInitialized={overview.isInitialized}
+										/>
+										: <Placeholder />
+									)}
+								</Observer>
+							</Grid>
+
+							<Grid item xs={12} md={12} lg={4} xl={3}>
+								<Observer triggerOnce>
+
+									{ inView => (inView
+										? <Statusbox headline={'Driftsinformation'}
+											hasMessage={overview.isInitialized && operationalAlarms.count() !== 0}
+											messages={operationalAlarms}
+											isInitialized={overview.isInitialized}
+										/>
+										: <Placeholder />
+									)}
+								</Observer>
+							</Grid>
+
 						</Grid>
 
 						: <Grid container spacing={0} >

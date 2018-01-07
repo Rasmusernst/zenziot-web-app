@@ -10,6 +10,7 @@ const distPath = path.join(__dirname, 'dist')
 const CompressionPlugin = require('compression-webpack-plugin')
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
+const HtmlCriticalPlugin = require('html-critical-webpack-plugin')
 
 const config = {
 	entry: {
@@ -58,6 +59,10 @@ const config = {
 		// 	name: 'vendor',
 		// 	minChunks: ({ resource }) => /node_modules/.test(resource),
 		// }),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'commons',
+			filename: 'commons.js',
+		}),
 
 		// Caching content via Service Worker - currently set to work on all pages.
 		new SWPrecacheWebpackPlugin({
@@ -84,7 +89,22 @@ const config = {
 				// For exporting all CSS to one external bundle
 				// Use the plugin to specify the resulting filename
 				new ExtractTextPlugin({ filename: '[name].[contenthash:hex:8].css' }),
-				// new BundleAnalyzerPlugin(),
+
+				new HtmlCriticalPlugin({
+					base: path.join(path.resolve(__dirname), 'dist/'),
+					src: 'index.html',
+					dest: 'index.html',
+					inline: true,
+					minify: true,
+					extract: true,
+					width: 1920,
+					height: 1080,
+					penthouse: {
+						blockJSRequests: false,
+					},
+				}),
+
+				new BundleAnalyzerPlugin(),
 			]
 			: [])
 		.concat(isDev ? [

@@ -14,6 +14,7 @@ export default class BottomNav extends PureComponent {
 		user: PropTypes.object,
 		onShowFrontpage: PropTypes.func.isRequired,
 		onShowOverview: PropTypes.func.isRequired,
+		onShowTrackers: PropTypes.func.isRequired,
 		onToggleDrawer: PropTypes.func.isRequired,
 		location: PropTypes.shape({
 			pathname: PropTypes.string.isRequired,
@@ -25,7 +26,7 @@ export default class BottomNav extends PureComponent {
 	}
 
 	render() {
-		const { user, onShowFrontpage, onShowOverview } = this.props
+		const { user, onShowFrontpage, onShowOverview, onShowTrackers } = this.props
 
 		const path = this.props.location.pathname
 		const userIsLoggedIn = user === undefined ? false : user.isLoggedIn
@@ -39,24 +40,26 @@ export default class BottomNav extends PureComponent {
 						<BottomNavigationButton
 							label='Overblik'
 							icon={<Icon className='material-icons'>home</Icon>}
-							onClick={onShowFrontpage}
-							className={path === '/' ? classes.highlight : null}
+							onClick={onShowOverview}
+							className={path === '/overview' ? classes.highlight : null}
 						/>
 
 						<BottomNavigationButton
 							label='Mine Enheder'
 							icon={<Icon className='material-icons'>view_list</Icon>}
-							onClick={onShowOverview}
-							className={path === '/register' ? classes.highlight : null}
+							onClick={onShowTrackers}
+							className={path === '/trackers' ? classes.highlight : null}
 						/>
 
 						<BottomNavigationButton
 							label='Kort'
 							icon={<Icon className='material-icons'>map</Icon>}
+							disabled
 						/>
 						<BottomNavigationButton
 							label='Konto'
 							icon={<Icon className='material-icons'>account_circle</Icon>}
+							disabled
 						/>
 					</BottomNavigation>
 

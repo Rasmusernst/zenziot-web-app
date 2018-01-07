@@ -110,7 +110,7 @@ class StatusBox extends PureComponent {
 
 		return (
 
-			<Grid item xs={12} md={12} lg={4} xl={3}>
+
 				<div className={statusBoxclasses.statusBox}>
 
 					<Paper >
@@ -169,7 +169,6 @@ class StatusBox extends PureComponent {
 
 				</div>
 
-			</Grid>
 		)
 	}
 }

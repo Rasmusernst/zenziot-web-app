@@ -2,5 +2,23 @@
   "presets":[
       ["env", {"modules": false}], "react"
   ],
-  "plugins": ["react-hot-loader/babel", "transform-class-properties", "transform-decorators-legacy"]
+  "plugins": [
+    "react-hot-loader/babel",
+    "transform-class-properties",
+    "transform-decorators-legacy",
+    ["transform-imports", {
+      "lodash": {
+        "transform": "lodash/${member}"
+      },
+      "material-ui": {
+        "transform": "material-ui/${member}"
+      },
+      "material-ui/svg-icons": {
+        "transform": "material-ui/svg-icons/${member}"
+      },
+      "core-decorators": {
+        "transform": "core-decorators/lib/${member}"
+      }
+    }]
+  ]
 }

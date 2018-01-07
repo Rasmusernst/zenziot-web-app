@@ -8,7 +8,6 @@ import Button from 'material-ui/Button'
 import Hidden from 'material-ui/Hidden'
 import Grid from 'material-ui/Grid'
 import Menu, { MenuItem } from 'material-ui/Menu'
-import Typography from 'material-ui/Typography'
 
 import logo from './zenziot_logo_white.svg'
 import classes from './style.scss'
@@ -93,7 +92,7 @@ export default class Header extends PureComponent {
 
 							</Grid>
 
-							<Button color='contrast' >
+							<Button color='contrast'>
 								<Icon className='material-icons'>notifications</Icon>
 							</Button>
 

@@ -4,7 +4,6 @@ import { Route, IndexRoute } from 'react-router'
 
 /* containers */
 
-// import App from './App'
 import Layout from './containers/Layout'
 import EnsureLoaded from './containers/EnsureLoaded'
 
@@ -13,20 +12,6 @@ import Frontpage from './containers/Frontpage'
 // import Register from './containers/Register'
 // import Trackers from './containers/Trackers'
 
-// const asyncContainer = (name) => (nextState, cb) => {
-// 	require.ensure([], () => {
-// 		console.log(name)
-// 		System.import('./containers/asyncContainers').then(module => cb(null, module[name]))
-// 	})
-// }
-//
-// function errorLoading(err) {
-// 	console.error('Lazy-loading failed', err)
-// }
-// function loadRoute(callback) {
-// 	return (module) => callback(null, module.default)
-// }
-//
 
 export default () => (
 	<Route path='/' component={Layout} >
@@ -51,29 +36,7 @@ export default () => (
 	</Route>
 )
 
-// function errorLoading(err) {
-// 	console.error('Lazy-loading failed', err)
-// }
-// function loadRoute(cb) {
-// 	return (module) => cb(null, module.default)
-// }
-//
-// export default () => ({
-// 	component: Layout,
-// 	path: '/',
-// 	indexRoute: { component: Frontpage },
-// 	childRoutes: [
-// 		{
-// 			path: '/overview',
-// 			getComponent(location, cb) {
-// 				System.import('./containers/Overview')
-// 					.then(loadRoute(cb))
-// 					.catch(errorLoading)
-// 			},
-// 		},
-//
-// 	],
-// })
+// original routes:
 
 // export default () => (
 // 	<Route path='/' component={Layout} >

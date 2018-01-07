@@ -23,6 +23,12 @@ const styles = theme => ({
 		backgroundColor: theme.palette.primary['500'],
 		height: '106px',
 	},
+	inactiveTab: {
+		color: 'rgba(46, 55, 59, 1)',
+	},
+	activeTab: {
+		color: 'rgba(46, 55, 59, 1)',
+	},
 	customPaperLightBlue: {
 		backgroundColor: '#6ec6ff',
 	},
@@ -86,13 +92,14 @@ class Trackers extends PureComponent {
 					<Tabs value={value}
 						onChange={this.handleChange}
 						indicatorColor='#FF9100'
-						textColor='rgba(46, 55, 59, 0.87)'
+						// textColor='rgba(46, 55, 59, 0.87)'
 						scrollable
+
 					>
-						<Tab label='Enheder' />
-						<Tab label='Områdealarmer' />
-						<Tab label='Bevægelsesalarmer' />
-						<Tab label='Alarmpersoner' />
+						<Tab label='Enheder' classes={{	root: classes.activeTab }} />
+						<Tab label='Områdealarmer' disabled classes={{	root: classes.inactiveTab }} />
+						<Tab label='Bevægelsesalarmer' classes={{	root: classes.activeTab }} />
+						<Tab label='Alarmpersoner' disabled classes={{	root: classes.inactiveTab }} />
 
 					</Tabs>
 				</AppBar>
@@ -105,7 +112,7 @@ class Trackers extends PureComponent {
 					}
 					{value === 1 &&
 						<Typography type='headline'>
-										Områdealarmer... coming soon!
+										Områdealarmer
 						</Typography>
 					}
 					{value === 2 &&
