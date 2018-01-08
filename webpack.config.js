@@ -32,7 +32,6 @@ const config = {
 		chunkFilename: isDev ? '[name].[id].js' : '[name].[id].[chunkhash:8].js',
 		hashDigest: 'hex',
 		publicPath: '/',
-		// Include comments with information about the modules - only for dev
 		pathinfo: isDev,
 		devtoolModuleFilenameTemplate: '[resource-path]',
 	},
@@ -59,10 +58,10 @@ const config = {
 		// 	name: 'vendor',
 		// 	minChunks: ({ resource }) => /node_modules/.test(resource),
 		// }),
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'commons',
-			filename: 'commons.js',
-		}),
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	name: 'commons',
+		// 	filename: 'commons.js',
+		// }),
 
 		// Caching content via Service Worker - currently set to work on all pages.
 		new SWPrecacheWebpackPlugin({
@@ -71,6 +70,7 @@ const config = {
 			filename: 'service-worker.js',
 			minify: true,
 			navigateFallback: path.join(srcPath, 'index.html'),
+			// staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/, /\.woff$/, /\.woff2$/, /\.[ot]tf$/, /\.eot$/],
 			staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
 		}),
 
@@ -206,11 +206,13 @@ const config = {
 			// We have set a limit (in bytes) for when webpack inlines the image as base64 via dataURL
 			// This is saves unnecessary round trips to the server for excessively small files
 			{ test: /\.svg(\?.*)?$/, use: 'url-loader?limit=65000&mimetype=image/svg+xml&name=[name].[hash:hex:8].[ext]' },
-			{ test: /\.woff$/, use: 'file-loader?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]' },
-			{ test: /\.woff2$/, use: 'file-loader?limit=65000&mimetype=application/font-woff2&name=public/fonts/[name].[ext]' },
-			{ test: /\.[ot]tf$/, use: 'file-loader?limit=65000&mimetype=application/octet-stream&name=public/fonts/[name].[ext]' },
-			{ test: /\.eot$/, use: 'file-loader?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]' },
+			// { test: /\.woff$/, use: 'file-loader?limit=65000&mimetype=application/font-woff&name=[name].[ext]' },
+			// { test: /\.woff2$/, use: 'file-loader?limit=65000&mimetype=application/font-woff2&name=[name].[ext]' },
+			// { test: /\.[ot]tf$/, use: 'file-loader?limit=65000&mimetype=application/octet-stream&name=[name].[ext]' },
+			// { test: /\.eot$/, use: 'file-loader?limit=65000&mimetype=application/vnd.ms-fontobject&name=[name].[ext]' },
 			{ test: /\.(png|jpg|webp)$/, use: 'url-loader?limit=8192&name=[name].[hash:hex:8].[ext]' },
+			// { test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/, use: 'url-loader?limit=8192&name=[name].[hash:hex:8].[ext]' },
+
 		],
 	},
 	// Enable importing JS files without specifying their extenstion

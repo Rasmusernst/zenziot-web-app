@@ -17,9 +17,11 @@ export default () => (
 	<Route path='/' component={Layout} >
 		<IndexRoute component={Frontpage} />
 		<Route path='/register'
+
 			getComponent={(location, cb) => {
 				System.import('./containers/Register').then(module => cb(null, module.default))
 			}} />
+
 		<Route component={EnsureLoaded} >
 			<Route path='/overview'
 				getComponent={(location, cb) => {

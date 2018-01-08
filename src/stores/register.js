@@ -38,7 +38,7 @@ export const actions = {
 		axios({
 			method: 'GET',
 			// headers: { 'Access-Control-Allow-Origin': '*' },
-			url: 'http://zenzapi.azurewebsites.net/api/users/GetTwoFactor?emailAddress=' + email,
+			url: 'https://zenzapi.azurewebsites.net/api/users/GetTwoFactor?emailAddress=' + email,
 		})
 			.then(function (response) {
 				dispatch({ type: response.data === 200 ? SET_TOKENISSENT : null })
@@ -53,7 +53,7 @@ export const actions = {
 
 		axios({
 			method: 'PATCH',
-			url: 'http://zenzapi.azurewebsites.net/api/users/ActivateAccount',
+			url: 'https://zenzapi.azurewebsites.net/api/users/ActivateAccount',
 			data: {
 				EmailAddress: email,
 				Password: password,

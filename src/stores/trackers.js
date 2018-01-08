@@ -1,4 +1,4 @@
-import qs from 'querystring'
+// import qs from 'querystring'
 
 import { handleActions } from 'redux-actions'
 import { fromJS, Record } from 'immutable'
@@ -43,7 +43,7 @@ export const actions = {
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/zenztrackers',
+			url: 'https://zenzapi.azurewebsites.net/api/zenztrackers',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,7 +61,7 @@ export const actions = {
 	getAreaAlarms: (trackerId) => async (dispatch) => {
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/zenztrackers/' + trackerId + '/areaalarms',
+			url: 'https://zenzapi.azurewebsites.net/api/zenztrackers/' + trackerId + '/areaalarms',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -81,7 +81,7 @@ export const actions = {
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/zenztrackers/GetDevicesList',
+			url: 'https://zenzapi.azurewebsites.net/api/zenztrackers/GetDevicesList',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -101,7 +101,7 @@ export const actions = {
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/',
+			url: 'https://zenzapi.azurewebsites.net/api/movementalarms/',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -122,7 +122,7 @@ export const actions = {
 		console.log(alarmId)
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
+			url: 'https://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -142,7 +142,7 @@ export const actions = {
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'POST',
-			url: 'http://zenzapi.azurewebsites.net/api/movementalarms',
+			url: 'https://zenzapi.azurewebsites.net/api/movementalarms',
 			data: {
 				name: name,
 				StartTime: startTime,
@@ -165,7 +165,7 @@ export const actions = {
 	editMovementAlarm: (name, startTime, stopTime, alarmId) => async (dispatch) => {
 		axios({
 			method: 'PATCH',
-			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
+			url: 'https://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
 			data: {
 				name: name,
 				StartTime: startTime,
@@ -175,7 +175,7 @@ export const actions = {
 				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
-			.then(function (response) {
+			.then(function () {
 				dispatch({ type: SETMOVEMENTALARM, payload: null })
 				return dispatch(actions.getMovementAlarms())
 			})
@@ -189,14 +189,14 @@ export const actions = {
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'DELETE',
-			url: 'http://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
+			url: 'https://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
 				'Accept': 'application/json',
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
-			.then(function (response) {
+			.then(function () {
 				dispatch({ type: SETMOVEMENTALARM, payload: null })
 				return dispatch(actions.getMovementAlarms())
 			})

@@ -50,7 +50,7 @@ export const actions = {
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'POST',
-			url: 'http://zenzapi.azurewebsites.net/token',
+			url: 'https://zenzapi.azurewebsites.net/token',
 			data: qs.stringify({
 				grant_type: 'password',
 				username: email,
@@ -76,7 +76,7 @@ export const actions = {
 		dispatch({ type: START_LOADING })
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/users',
+			url: 'https://zenzapi.azurewebsites.net/api/users',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',

@@ -28,7 +28,7 @@ export const actions = {
 	getMessages: () => async (dispatch) => {
 		axios({
 			method: 'GET',
-			url: 'http://zenzapi.azurewebsites.net/api/overview',
+			url: 'https://zenzapi.azurewebsites.net/api/overview',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/x-www-form-urlencoded',
