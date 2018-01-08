@@ -36,7 +36,6 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				// console.log('response from api: ', response)
 				if (response.status === 200) {
 					dispatch({ type: SETMESSAGES, payload: response.data })
 					dispatch({ type: SETISINITIALIZED, payload: true })

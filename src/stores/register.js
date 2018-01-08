@@ -33,8 +33,6 @@ export const actions = {
 	setError: (payload) => ({ type: SET_ERROR, payload }),
 
 	requestToken: (email) => (dispatch) => {
-		console.log('requesting token for email: ', email)
-
 		axios({
 			method: 'GET',
 			// headers: { 'Access-Control-Allow-Origin': '*' },
@@ -49,8 +47,6 @@ export const actions = {
 	},
 
 	sendToken: (token, password, email) => (dispatch) => {
-		console.log('token: ', token, 'pwrd: ', password, 'email: ', email)
-
 		axios({
 			method: 'PATCH',
 			url: 'https://zenzapi.azurewebsites.net/api/users/ActivateAccount',
@@ -59,7 +55,6 @@ export const actions = {
 				Password: password,
 				TwoFactorCode: token,
 			},
-			// headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Accept': 'application/json' },
 		})
 			.then(function () {
 				dispatch({ type: SET_TOKENISVALID })

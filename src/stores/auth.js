@@ -34,19 +34,11 @@ export const actions = {
 	setError: (payload) => ({ type: SET_ERROR, payload }),
 
 	ensureLoaded: () => (dispatch) => {
-		console.log('ensureLoaded fired')
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		return dispatch(actions.getAccessToken())
-
-		// const { auth } = getState()
-		// if (!auth.get('isInitialized')) {
-		// 	console.log('ensureLoaded fired true')
-		// 	return dispatch(actions.getAccessToken())
-		// }
 	},
 
 	setAccessToken: (email, password) => async (dispatch) => {
-		console.log('setAccessToken fired')
 		dispatch({ type: SETISINITIALIZED, payload: false })
 		axios({
 			method: 'POST',
@@ -59,7 +51,6 @@ export const actions = {
 			headers: { 'accept': 'application/json', 'cache-control': 'no-cache' },
 		})
 			.then(function (response) {
-				// console.log('response from api: ', response.data.access_token)
 				localStorage.setItem('accessToken', response.data.access_token)
 				return dispatch(actions.getAccessToken())
 			})
@@ -72,7 +63,6 @@ export const actions = {
 	getAccessToken: () => async (dispatch) => {
 		// to do: add timer for how often we should check the token with the db
 		// for now just check with each route.
-		console.log('getAccessToken fired')
 		dispatch({ type: START_LOADING })
 		axios({
 			method: 'GET',
@@ -84,7 +74,6 @@ export const actions = {
 				'Authorization': 'Bearer ' + localStorage.getItem('accessToken') },
 		})
 			.then(function (response) {
-				// console.log('response from api: ', response)
 				if (response.status === 200) {
 					dispatch({ type: SETUSER, payload: response.data })
 					dispatch({ type: ISLOGGEDIN, payload: true })

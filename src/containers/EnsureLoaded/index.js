@@ -19,22 +19,13 @@ export default class EnsureLoaded extends PureComponent {
 
 	componentDidMount() {
 		this.props.ensureLoaded()
-		// console.log('componentDidMount')
-		// console.log(this.props.auth.isInitialized, this.props.auth.isLoading, this.props.auth.isLoggedIn)
-		// console.log('EnsureLoaded says isLoggedIn is: ', this.props.auth.isLoggedIn)
 	}
 
 	componentWillUpdate(nextProps) {
-		// console.log('next props', nextProps.children.props.location.pathname )
-		// console.log('current props', this.props.children.props.location.pathname )
 		if (nextProps.children.props.location.pathname !== this.props.children.props.location.pathname) {
-			// console.log('componentWillUpdate')
 			this.props.ensureLoaded()
 		}
 	}
-	// componentDidUpdate() {
-	// 	console.log(this.props.auth.isInitialized, this.props.auth.isLoading, this.props.auth.isLoggedIn)
-	// }
 
 	// First we need to make sure we dont react to any routing requests bafore api call to check access token validity has completed
 	// isInitialized is used as an indication that the getAccessToken endpoint has been called and that a user has been returned.
@@ -45,7 +36,7 @@ export default class EnsureLoaded extends PureComponent {
 		const { children, auth } = this.props
 
 		if (auth.isInitialized && !auth.isLoading) {
-			// console.log('fired', auth.user)
+
 			if (auth.isLoggedIn) {
 				return Children.only(children)
 			}

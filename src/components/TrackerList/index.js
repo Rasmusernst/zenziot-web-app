@@ -31,9 +31,9 @@ class TrackerList extends PureComponent {
 	}
 
 	alarmIsActive(areaAlarm, movementAlarm) {
-		console.log(areaAlarm, movementAlarm)
+
 		const activated = areaAlarm !== null || movementAlarm !== null
-		console.log(activated)
+
 		return activated
 	}
 

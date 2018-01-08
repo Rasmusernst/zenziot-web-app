@@ -27,7 +27,6 @@ export default class Layout extends PureComponent {
 	render() {
 		const { children, auth } = this.props
 		const user = auth ? auth.get('user') : null
-		// console.log('user:', user)
 		return (
 			<Body
 

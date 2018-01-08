@@ -119,7 +119,6 @@ export const actions = {
 
 	getMovementAlarm: (alarmId) => async (dispatch) => {
 		dispatch({ type: SETISINITIALIZED, payload: false })
-		console.log(alarmId)
 		axios({
 			method: 'GET',
 			url: 'https://zenzapi.azurewebsites.net/api/movementalarms/' + alarmId,
