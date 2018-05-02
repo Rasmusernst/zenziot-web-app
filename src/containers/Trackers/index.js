@@ -18,6 +18,7 @@ import { actions as trackersActions } from '../../stores/trackers'
 
 import trackersClasses from './style.scss'
 
+// creating changes to the styles for the mui components via react inline style
 const styles = theme => ({
 	customPaperBlue: {
 		backgroundColor: theme.palette.primary['500'],
@@ -38,6 +39,16 @@ const styles = theme => ({
 	},
 })
 
+// Here we extend the PureComponent class to create a new derived class called Trackers.
+// Classes support extending other classes, but can also extend other objects. Whatever you extend must be a constructor.
+
+// withRouter can get access to the routers history object properties. This can be used for triggering routing changes or looking for parts of the current url
+// withRouter is used as a higher order component (HOC) that is, a component wrapping this component: export default withRouter(connect(...)(Trackers))
+// this can get tiresome and hard to read, so instead we can use decorator syntax, supported by babel which compiles the decorators to es5.
+
+// the conect decorator is also a HOC. It is using redux bindActionCreators, which is basically shorthand for redux specific methods mapDispatchToProps and mapStateToProps
+// these handle mapping of redux action methods and redux state to the props of the given component.
+
 @withRouter
 @connect(({ trackers }) => ({ trackers }), trackersActions)
 class Trackers extends PureComponent {
@@ -52,24 +63,37 @@ class Trackers extends PureComponent {
 		deleteMovementAlarm: PropTypes.func,
 		classes: PropTypes.object.isRequired,
 	}
+	// In JavaScript, class methods are not bound by default. If you forget to bind this.yourmethod and pass it to onClick or use it as props for other components,
+	// this will be undefined when the function is actually called.
+
+	// Using vanilla ES6/ES7 JavaScript we would have to bind custom component methods, like handleGetMovementAlarm, to the component inside the constructor() by using the bind keyword
+	// this makes the code very versbose, it is easy to mess up or forget, and hard to read. So instead we use the autobind decorator, which does this for us.
+	// also note: the only reason we need the custom methods here are to pass parameters to the Redux store action methods.
 		@autobind handleCreateMovementAlarm(name, startTime, stopTime) { this.props.createMovementAlarm(name, startTime, stopTime) }
 		@autobind handleEditMovementAlarm(name, startTime, stopTime, alarmId) { this.props.editMovementAlarm(name, startTime, stopTime, alarmId) }
 		@autobind handleGetMovementAlarm(alarmId) { this.props.getMovementAlarm(alarmId) }
 		@autobind handleDeleteMovementAlarm(alarmId) { this.props.deleteMovementAlarm(alarmId) }
 
 		componentDidMount() {
+			// here we can just access the methods from props, without the autobind decorator, as we do not need to pass any arguments to the redux stores action methods
+			// this is handled through property initializers - see comment below. It will automatically ensure that the 'this' context is bound to the component inside of the method.
 			this.props.getTrackers()
 			this.props.getMovementAlarms()
 			this.props.getTrackerList()
 		}
 
+		// We use an experimental JavaScript feature called property initializers, which allows us to define initial state outside of the constructor
+		// It allows for a much cleaner ES6 class component style. Support is through babel-plugin-transform-class-properties
 	state = {
 		value: 0,
 	}
 
+	// in ES6 {value} is shorthand for {value: value}, which sets the state propery of value to be that of the value parameter.
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer
 	handleChange = (event, value) => {
 		this.setState({ value })
 	}
+
 	render() {
 		const { classes, trackers } = this.props
 		const { value } = this.state

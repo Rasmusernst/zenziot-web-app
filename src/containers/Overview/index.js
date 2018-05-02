@@ -46,6 +46,7 @@ class Overview extends PureComponent {
 		getMessages: PropTypes.func.isRequired,
 	}
 
+	// Simple class instance methods using short-hand method declaration
 	componentDidMount() {
 		this.props.getMessages()
 	}

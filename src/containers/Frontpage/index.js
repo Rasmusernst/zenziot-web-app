@@ -11,7 +11,11 @@ import { FormControl } from 'material-ui/Form'
 import Input, { InputLabel } from 'material-ui/Input'
 import { withStyles } from 'material-ui/styles'
 import Hidden from 'material-ui/Hidden'
+
 import Icon from 'material-ui/Icon'
+import SvgIcon from 'material-ui/SvgIcon'
+
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
 
 import { actions as authActions } from '../../stores/auth'
 
@@ -35,6 +39,25 @@ const styles = theme => ({
 		},
 	},
 })
+
+const HomeIcon = props => (
+	<SvgIcon {...props}>
+		<path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z' />
+	</SvgIcon>
+)
+
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+	<GoogleMap
+		defaultZoom={8}
+		defaultCenter={{ lat: -34.397, lng: 150.644 }}
+	>
+		{props.isMarkerShown &&
+			<Marker
+				position={{ lat: -34.397, lng: 150.644 }}
+				icon={logo}
+			/>}
+	</GoogleMap>,
+))
 
 @withRouter
 @connect(({ auth }) => ({ auth }), authActions)
@@ -238,6 +261,17 @@ class Frontpage extends PureComponent {
 						</Grid>
 					</Grid>
 				</Grid>
+
+				{/* <Grid item xs={12}>
+					<MyMapComponent
+						isMarkerShown
+						googleMapURL='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
+						loadingElement={<div style={{ height: `100%` }} />}
+						containerElement={<div style={{ height: `400px` }} />}
+						mapElement={<div style={{ height: `100%` }} />}
+						defaultIcon={<Icon className={customClasses.icon} color='primary' >monetization_on</Icon>}
+					/>
+				</Grid> */}
 			</Grid>
 		)
 	}
